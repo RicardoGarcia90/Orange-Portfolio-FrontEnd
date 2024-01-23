@@ -6,12 +6,15 @@ especificação do Conventional Commits é uma convenção simples para utilizar
 
 A mensagem do commit deve ser estruturada da seguinte forma:
 
-<tipo>(<escopo>): <mensagem>
+'tipo' 'escopo' : 'mensagem'
 
 Componentes da Estrutura:
 Tipo: Define a natureza da alteração, e.g., `feat`, `fix`, `docs`.
+
 Escopo: É opcional e contextualiza onde a mudança ocorre, e.g., `auth`, `backend`.
+
 Mensagem: Descreve a mudança de maneira concisa.
+
 Por exemplo, o commit feat(auth): add 2FA functionality indica a introdução de uma nova funcionalidade relacionada à autenticação - a funcionalidade de autenticação de dois fatores.
 
 ## Tipos
