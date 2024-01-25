@@ -1,9 +1,33 @@
 import Navbar from "../components/Navbar"
+import ProjectsList from "../components/ProjectsList"
+import Typography from "@mui/material/Typography"
+import Box from "@mui/material/Box"
 
 const Home = () => {
   return (
     <>
       <Navbar />
+
+      <Typography variant={{xs: "h5", md: 'h4'}} component="h1" color={'primary'}
+        sx={{
+          maxWidth: '744px',
+          textAlign: 'center',
+          marginX: {xs: '24px', md: 'auto'},
+          marginTop: {xs: '64px', md: '112px'},
+          marginBottom: {xs: '40px', md: '112px'},
+          fontWeight: '400',
+          fontSize: {xs: '24px', md: '34px'},
+          letterSpacing: '0.25px',
+        }}
+        >
+        Junte-se à comunidade de inovação, inspiração e descobertas, transformando experiências em conexões inesquecíveis
+      </Typography>
+
+      <Box sx={{
+        mx: {xs: '24px', md: '32px'},
+      }}>
+        <ProjectsList />
+      </Box>
     </>
   )
 }

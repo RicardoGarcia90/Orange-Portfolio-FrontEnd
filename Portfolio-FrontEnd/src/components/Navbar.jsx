@@ -21,13 +21,14 @@ const Navbar = () => {
 
   return (
     <AppBar 
+      position="static"
       sx={{
         backgroundColor: 'primary.dark', 
         display: 'flex', 
         flexDirection: 'row', 
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: {xs: '12px 24px', md: '16px 30px'},
+        padding: {xs: '12px 24px', md: '16px 32px'},
         height: '73px',
         }}>
 
