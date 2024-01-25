@@ -5,7 +5,7 @@ import Link from "@mui/material/Link";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Menu, MenuItem } from "@mui/material";
+import { Divider, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 
 const Navbar = () => {
@@ -78,6 +78,12 @@ const Navbar = () => {
         <Menu
           id="nav-menu"
           anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 56,
+          }}
+          transformOrigin={{
+            horizontal: 'center',
+          }}
           open={open}
           onClose={handleClose}
           MenuListProps={{
@@ -85,14 +91,20 @@ const Navbar = () => {
           }}
           sx={{fontSize: '16px'}}
         >
-          <MenuItem onClick={handleClose} sx={{'&:hover': {backgroundColor: 'secondary.light'}}}>
+          <MenuItem onClick={handleClose}>
             <Link href="#" underline="none" color="inherit">
               Meus Projetos
             </Link>
           </MenuItem>
-          <MenuItem onClick={handleClose} sx={{'&:hover': {backgroundColor: 'secondary.light'}}}>
+          <MenuItem onClick={handleClose}>
             <Link href="#" underline="none" color="inherit">
               Descobrir
+            </Link>
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={handleClose}>
+            <Link href="#" underline="none" color="inherit">
+              Configurações
             </Link>
           </MenuItem>
         </Menu>
