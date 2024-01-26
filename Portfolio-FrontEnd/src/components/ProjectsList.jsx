@@ -12,6 +12,8 @@ const ProjectsList = () => {
       avatar: 'src/assets/project-1-profile.png',
       name: 'Camila Soares',
       date: '12/23',
+      description: 'Temos o prazer de compartilhar com vocês uma variação do nosso primeiro recurso gratuito. É um modelo de IA. Tentamos redesenhar uma versão mais minimalista do nosso primeiro projeto.',
+      link: 'https://gumroad.com/products/wxCSL',
       tags: [
         {
           id: 1,
@@ -22,7 +24,7 @@ const ProjectsList = () => {
           desc: 'Web'
         }
       ]
-    }
+    },
   ]
 
   return (
