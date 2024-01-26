@@ -25,6 +25,7 @@ const Home = () => {
 
       <Box sx={{
         mx: {xs: '24px', md: '32px'},
+        mb: '100px'
       }}>
         <ProjectsList />
       </Box>

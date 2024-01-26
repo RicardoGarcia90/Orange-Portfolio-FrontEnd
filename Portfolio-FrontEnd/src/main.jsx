@@ -26,7 +26,11 @@ const theme = createTheme({
     },
     info: {
       main: '#315FCE',
+    },
+    text: {
+      secondary: '#515255',
     }
+
   }
 })
 
