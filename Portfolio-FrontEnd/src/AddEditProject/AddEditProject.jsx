@@ -1,45 +1,121 @@
 /* eslint-disable react/prop-types */
-import { TextField, styled } from "@mui/material";
-import "./AddEditProjectStyle.css";
-import Button from "@mui/material/Button";
+import {
+  Box,
+  Container,
+  TextField,
+  Typography,
+  styled,
+  Button,
+} from "@mui/material";
 
 export default function AddEditProject({ isProjectBlank, srcImage }) {
   return (
-    <div id="card">
-      
-      <h5 id="card-title">
+    <Container
+      maxWidth="md"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-around",
+        background: "#fefefe",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <Typography
+        variant="h5"
+        sx={{
+          maxWidth: "826px",
+          mt: "24px"
+        }}
+      >
         {isProjectBlank ? "Adicionar projeto" : "Editar projeto"}
-      </h5>
-      
-      <div id="input-form-container">
-        
-        <div id="left-side-form-container">
+      </Typography>
 
-          <p id="upload-selection-text">Selecione o conteúdo que você deseja fazer upload</p>
-          <div id="image-container">
-            {!isProjectBlank && <img src={srcImage} alt="Project's image" id="project-image"/>}
-            <input type="file" id="image-picker" accept="image/*"/>
-          </div>
-        </div>
+      <Box
+        id="input-form-container"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: { sm: "column-reverse", md: "row" },
+          alignItems: "flex-start",
+          gap: "24px",
+          mt: "24px",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "16px",
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            sx={{
+              alignSelf: "stretch",
+            }}
+          >
+            Selecione o conteúdo que você deseja fazer upload
+          </Typography>
+          <img src={srcImage} alt="Project's image" style={{
+            width: "390px",
+            height: "307px"
+          }} />
+        </Box>
 
-        <form id="right-side-form-container">
+        <Box
+          sx={{
+            width: "413px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            gap: "16px",
+            alignSelf: "stretch",
+          }}
+        >
           <InputText placeholder="Título" />
           <InputText placeholder="Tags" />
           <InputText placeholder="Link" />
           <InputText placeholder="Descrição" />
-        </form>
+        </Box>
+      </Box>
 
-      </div>
+      <Box
+        id="button-container"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          gap: "16px",
+          mt: "16px",
+          mb: "24px",
+        }}
+      >
+        <a href="/">
+          <Typography variant="subtitle1">Visualizar publicação</Typography>
+        </a>
 
-      <div id="button-container">
-        <a href="#" id="project-preview-button">Visualizar publicação</a>
-        <div id="buttons">
-          <SaveButton variant="contained">Salvar</SaveButton>
-          <CancelButton variant="contained">Cancelar</CancelButton>
-        </div>
-      </div>
+        <Box
+          id="buttons"
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: "16px",
+          }}
+        >
+          <SaveButton variant="contained" onClick={clickFunction}>
+            <Typography variant="button">Salvar</Typography>
+          </SaveButton>
 
-    </div>
+          <CancelButton variant="contained" onClick={clickFunction}>
+            <Typography variant="button">Cancelar</Typography>
+          </CancelButton>
+        </Box>
+      </Box>
+    </Container>
   );
 }
 
@@ -56,25 +132,15 @@ function InputText({ placeholder }) {
 }
 
 const SaveButton = styled(Button)({
-  backgroundColor: "#f52",
+  backgroundColor: "#FF5522",
   color: "#FCFDFF",
-  fontFamily: "'Roboto', sans-serif",
-  fontSize: "15px",
-  fontStyle: "normal",
-  fontWeight: 500,
-  lineHeight: "26px" /* 173.333% */,
-  letterSpacing: "0.46px",
-  textTransform: "uppercase",
 });
 
 const CancelButton = styled(Button)({
   backgroundColor: "rgba(0, 0, 0, 0.12)",
   color: "rgba(0, 0, 0, 0.38)",
-  fontFamily: "'Roboto', sans-serif",
-  fontSize: "15px",
-  fontStyle: "normal",
-  fontWeight: 500,
-  lineHeight: "26px" /* 173.333% */,
-  letterSpacing: "0.46px",
-  textTransform: "uppercase",
 });
+
+const clickFunction = () => {
+  alert("Clicked");
+};
