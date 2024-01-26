@@ -8,7 +8,11 @@ const Home = () => {
     <>
       <Navbar />
 
-      <Typography variant={{xs: "h5", md: 'h4'}} component="h1" color={'primary'}
+      <Box sx={{
+        mx: {xs: '24px', md: '32px', xl: '10%'},
+        mb: '100px'
+      }}>
+        <Typography variant={{xs: "h5", md: 'h4'}} component="h1" color={'primary'}
         sx={{
           maxWidth: '744px',
           textAlign: 'center',
@@ -20,13 +24,9 @@ const Home = () => {
           letterSpacing: '0.25px',
         }}
         >
-        Junte-se à comunidade de inovação, inspiração e descobertas, transformando experiências em conexões inesquecíveis
-      </Typography>
+          Junte-se à comunidade de inovação, inspiração e descobertas, transformando experiências em conexões inesquecíveis
+        </Typography>
 
-      <Box sx={{
-        mx: {xs: '24px', md: '32px'},
-        mb: '100px'
-      }}>
         <ProjectsList />
       </Box>
     </>
