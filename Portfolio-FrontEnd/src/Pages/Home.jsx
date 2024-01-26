@@ -12,7 +12,7 @@ const Home = () => {
         mx: {xs: '24px', md: '32px', xl: '10%'},
         mb: '100px'
       }}>
-        <Typography variant={{xs: "h5", md: 'h4'}} component="h1" color={'primary'}
+        <Typography variant="h4" component="h1" color={'primary'}
         sx={{
           maxWidth: '744px',
           textAlign: 'center',

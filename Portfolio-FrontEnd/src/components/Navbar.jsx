@@ -79,10 +79,12 @@ const Navbar = () => {
           id="nav-menu"
           anchorEl={anchorEl}
           anchorOrigin={{
+            horizontal: 'left',
             vertical: 56,
           }}
           transformOrigin={{
             horizontal: 'center',
+            vertical: 'top',
           }}
           open={open}
           onClose={handleClose}
