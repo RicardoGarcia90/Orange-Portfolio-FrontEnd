@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import {
-  Box,
   Container,
   TextField,
   Typography,
@@ -8,22 +7,27 @@ import {
   Button,
   IconButton,
   Modal,
+  Stack,
 } from "@mui/material";
 import { useState } from "react";
 import CollectionsIcon from "@mui/icons-material/Collections";
 
-export default function AddEditProject({ isProjectBlank }) {
-  const [projectImage, setProjectImage] = useState(null);
-  const [projectTitle, setProjectTitle] = useState("123");
-  const [projectDescription, setProjectDescription] = useState("");
-  const [projectLink, setProjectLink] = useState("");
-  const [projectTags, setProjectTags] = useState([""]);
+export default function AddEditProject({ project }) {
+  const [newProjectImage, setNewProjectImage] = useState(null);
+  const [newProjectTitle, setNewProjectTitle] = useState(project.title);
+  const [newProjectDescription, setNewProjectDescription] = useState(
+    project.description
+  );
+  const [newProjectLink, setNewProjectLink] = useState(project.link);
+  const [newProjectTags, setNewProjectTags] = useState([
+    project.tags.join(", "),
+  ]);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setProjectImage(reader.result);
+      setNewProjectImage(reader.result);
     };
     reader.readAsDataURL(file);
   };
@@ -31,129 +35,165 @@ export default function AddEditProject({ isProjectBlank }) {
   const handleTextChange = (event, field) => {
     switch (field) {
       case "Título":
-        setProjectTitle(event.target.value);
+        setNewProjectTitle(event.target.value);
         break;
       case "Descrição":
-        setProjectDescription(event.target.value);
+        setNewProjectDescription(event.target.value);
         break;
       case "Link":
-        setProjectLink(event.target.value);
+        setNewProjectLink(event.target.value);
         break;
       case "Tags":
-        setProjectTags(event.target.value.split(","));
+        setNewProjectTags(event.target.value.split(","));
         break;
       default:
         break;
     }
   };
 
-  const clickFunction = () => {
+  const onSave = () => {
     alert(`
-    Título do projeto: ${projectTitle}
-    Link do projeto: ${projectLink}
-    Descrição do projeto: ${projectDescription}
-    Tags do projeto: ${projectTags.join(", ")}
+    Título do projeto: ${newProjectTitle}
+    Link do projeto: ${newProjectLink}
+    Descrição do projeto: ${newProjectDescription}
+    Tags do projeto: ${newProjectTags.join(", ")}
+    Imagem do projeto: ${newProjectImage}
+    `);
+  };
+
+  const onCancel = () => {
+    alert(`
+    Título do projeto: ${project.title}
+    Link do projeto: ${project.link}
+    Descrição do projeto: ${project.description}
+    Tags do projeto: ${project.tags.join(", ")}
     `);
   };
 
   return (
     <Modal open>
       <Container
-        maxWidth="md"
+        maxWidth={"md"}
         sx={{
-          display: "flex",
+          bgcolor: "#FEFEFE",
           flexDirection: "column",
-          justifyContent: "space-around",
-          background: "#fefefe",
-          width: "100%",
-          height: "100%",
+          gap: "24px",
+          pt: "24px",
+          pb: "24px",
+          overflowY: "auto",
+          height: { xs: "100%", md: "auto" },
         }}
       >
-        <Typography
-          variant="h5"
-          sx={{
-            maxWidth: "826px",
-            mt: "24px",
-          }}
-        >
-          {isProjectBlank ? "Adicionar projeto" : "Editar projeto"}
-        </Typography>
+        <Stack id="title-container">
+          <Typography variant="h5">
+            {project ? "Editar projeto" : "Adicionar projeto"}
+          </Typography>
+        </Stack>
 
-        <Box
-          id="input-form-container"
+        <Stack
+          id="image-input-form-container"
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: {
-              xs: "column-reverse",
-              sm: "column-reverse",
-              md: "row",
-            },
-            alignItems: "flex-start",
-            gap: "24px",
+            flexDirection: { xs: "column", sm: "row-reverse" },
+            hight: { xs: "713px", sm: "336px" },
+            width: { xs: "100%", sm: "826px" },
+            gap: "16px",
             mt: "24px",
+            mb: "16px",
           }}
         >
-          <Box
+          <Stack
+            id="input-side"
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: "16px",
+              width: { xs: "100%", sm: "413px" },
             }}
           >
-            <Typography
-              variant="subtitle1"
+            <Stack
+              id="input-container"
               sx={{
-                alignSelf: "stretch",
+                gap: "16px",
               }}
             >
+              <InputText
+                label="Título"
+                defaultText={project.title}
+                handleTextChange={handleTextChange}
+              />
+              <InputText
+                label="Tags"
+                defaultText={project.tags.join(", ")}
+                handleTextChange={handleTextChange}
+              />
+              <InputText
+                label="Link"
+                defaultText={project.link}
+                handleTextChange={handleTextChange}
+              />
+              <InputText
+                label="Descrição"
+                defaultText={project.description}
+                handleTextChange={handleTextChange}
+              />
+            </Stack>
+          </Stack>
+
+          <Stack
+            id="image-side-form"
+            sx={{
+              maxWidth: { xs: "100%", sm: "389px" },
+              height: { xs: "353px", sm: "341px" },
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography variant="subtitle1">
               Selecione o conteúdo que você deseja fazer upload
             </Typography>
 
-            <Box>
-              {projectImage ? (
-                <Box>
+            <Stack
+              id="image-upload-container"
+              sx={{
+                bgcolor: "neutral.light",
+                width: "100%",
+                height: "304px",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {newProjectImage ? (
+                <Stack
+                  id="image-container"
+                  sx={{ width: "100%", height: "100%" }}
+                >
                   <img
-                    src={projectImage}
+                    src={newProjectImage}
                     alt="Project's image"
-                    onClick={() => setProjectImage(null)}
-                    style={{
-                      width: "390px",
-                      height: "307px",
-                    }}
+                    onClick={() => setNewProjectImage(null)}
+                    style={{}}
                   />
-                </Box>
+                </Stack>
               ) : (
-                <Box
+                <Stack
+                  id="upload-container"
                   sx={{
-                    width: "390px",
-                    height: "307px",
-                    bgcolor: "#E6E9F2",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    bgcolor: "neutral.light",
                   }}
                 >
-                  <Box>
+                  <Stack id="upload-button">
                     <IconButton
                       component="label"
                       variant="contained"
                       sx={{
-                        display: "flex",
                         flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "270px",
-                        height: "122px",
                         gap: "16px",
                       }}
                     >
                       <CollectionsIcon fontSize="large" />
                       <Typography
                         variant="body2"
-                        sx={{ display: "flex", justifyContent: "flex-start" }}
+                        sx={{
+                          alignSelf: "flex-start",
+                        }}
                       >
                         Compartilhe seu talento com milhares de pessoas
                       </Typography>
@@ -164,74 +204,53 @@ export default function AddEditProject({ isProjectBlank }) {
                         onChange={(event) => handleImageUpload(event)}
                       />
                     </IconButton>
-                  </Box>
-                </Box>
+                  </Stack>
+                </Stack>
               )}
-            </Box>
-          </Box>
+            </Stack>
+          </Stack>
+        </Stack>
 
-          <Box
-            sx={{
-              width: "413px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              gap: "16px",
-              alignSelf: "stretch",
-            }}
-          >
-            <InputText label="Título" handleTextChange={handleTextChange} />
-            <InputText label="Tags" handleTextChange={handleTextChange} />
-            <InputText label="Link" handleTextChange={handleTextChange} />
-            <InputText label="Descrição" handleTextChange={handleTextChange} />
-          </Box>
-        </Box>
-
-        <Box
+        <Stack
           id="button-container"
+          spacing={2}
           sx={{
-            display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
             alignItems: "flex-start",
-            gap: "16px",
-            mt: "16px",
-            mb: "24px",
           }}
         >
           <a href="/">
             <Typography variant="subtitle1">Visualizar publicação</Typography>
           </a>
 
-          <Box
+          <Stack
             id="buttons"
             sx={{
-              display: "flex",
-              alignItems: "flex-start",
+              flexDirection: "row",
               gap: "16px",
             }}
           >
-            <SaveButton variant="contained" onClick={clickFunction}>
+            <SaveButton variant="contained" color="secondary" onClick={onSave}>
               <Typography variant="button">Salvar</Typography>
             </SaveButton>
 
-            <CancelButton variant="contained" onClick={clickFunction}>
+            <CancelButton variant="contained" onClick={onCancel}>
               <Typography variant="button">Cancelar</Typography>
             </CancelButton>
-          </Box>
-        </Box>
+          </Stack>
+        </Stack>
       </Container>
     </Modal>
   );
 }
 
-function InputText({ label, handleTextChange }) {
+function InputText({ label, defaultText, handleTextChange }) {
   return (
     <TextField
       label={label}
       variant="outlined"
-      fullWidth
       multiline
+      defaultValue={defaultText}
       rows={label === "Descrição" ? 4 : 1}
       onChange={(event) => handleTextChange(event, label)}
     />
@@ -239,7 +258,6 @@ function InputText({ label, handleTextChange }) {
 }
 
 const SaveButton = styled(Button)({
-  backgroundColor: "#f52",
   color: "#FCFDFF",
 });
 
