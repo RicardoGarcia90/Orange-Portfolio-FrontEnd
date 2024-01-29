@@ -6,10 +6,17 @@ import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const ProjectDetail = ({open = false, handleClose, project}) => {
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <Modal
+      hideBackdrop={isMobile}
       open={open}
       onClose={handleClose}
       aria-labelledby="project-modal"
@@ -22,7 +29,7 @@ const ProjectDetail = ({open = false, handleClose, project}) => {
           position: 'relative',
           maxWidth: '1042px',
           bgcolor: 'background.default',
-          mt: {xs: '100px', md: '176px'},
+          mt: {xs: '65px', sm: '100px', md: '176px'},
           mx: {xs: '0', sm: '10%', md: '119px'},
           p: {xs: '61px 24px', md: '61px 112px'},
           height: {xs: '100%', md: 'auto'},
@@ -46,7 +53,7 @@ const ProjectDetail = ({open = false, handleClose, project}) => {
           }}
         >
           <Box sx={{
-            display: 'flex',
+            display: {xs: 'none', md: 'flex'},
             alignItems: 'center',
             gap: '12px',
           }}>
@@ -61,9 +68,50 @@ const ProjectDetail = ({open = false, handleClose, project}) => {
             </Box>
           </Box>
 
-          <Typography variant='h5' component='h2'>
+          <Typography variant='h5' component='h2' align='center' sx={{m: '0 auto'}}>
             {project.title}
           </Typography>
+
+          <Box 
+            sx={{
+              display: {xs: 'none', md: 'flex'},
+              alignItems: 'center',
+              gap: '8px'
+            }}
+          >
+            {project.tags.map((tag) => {
+              return <Chip label={tag.desc} key={tag.id} />
+            })}
+          </Box>
+        </Box>
+
+        <Box sx={{
+          width: '100%',
+          mt: '32px',          
+        }}>
+          <img src={project.img} />
+        </Box>
+
+        <Box 
+          sx={{
+            display: {xs: 'flex', sm: 'flex', md: 'none'},
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mt: '8px',
+          }}
+        >
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}>
+            <Avatar alt="User photo" src={project.avatar} sx={{width: '40px', height: '40px',}} />
+            
+            <Typography component="p" sx={{color: 'neutral.colorNeutral110'}}>
+              {project.name} • {project.date}
+            </Typography>
+            
+          </Box>
 
           <Box 
             sx={{
@@ -78,15 +126,11 @@ const ProjectDetail = ({open = false, handleClose, project}) => {
           </Box>
         </Box>
 
-        <Box sx={{
-          width: '100%',
-          mt: '32px',
-          mb: '64px'
-        }}>
-          <img src={project.img} />
-        </Box>
-
-        <Typography variant='body1' component='p'>
+        <Typography variant='body1' component='p'
+          sx={{
+            mt: {xs: '16px', md: '64px'},
+          }}
+        >
           {project.description}
         </Typography>
         
