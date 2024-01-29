@@ -16,7 +16,7 @@ const Home = () => {
         sx={{
           maxWidth: '744px',
           textAlign: 'center',
-          marginX: {xs: '24px', md: 'auto'},
+          marginX: {sm: 'auto', md: 'auto'},
           marginTop: {xs: '64px', md: '112px'},
           marginBottom: {xs: '40px', md: '112px'},
           fontWeight: '400',

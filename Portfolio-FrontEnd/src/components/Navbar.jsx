@@ -5,7 +5,9 @@ import Link from "@mui/material/Link";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Divider, Menu, MenuItem } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 
 const Navbar = () => {
@@ -29,7 +31,7 @@ const Navbar = () => {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: {xs: '12px 24px', md: '16px 32px'},
-        height: '73px',
+        height: {xs: '64px', md: '73px'},
         }}>
 
       <Box sx={{
