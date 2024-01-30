@@ -12,8 +12,17 @@ import {
 import { useState } from "react";
 import CollectionsIcon from "@mui/icons-material/Collections";
 
-export default function AddEditProject({ project }) {
-  const [newProjectImage, setNewProjectImage] = useState(null);
+export default function AddEditProject({ projectData }) {
+  
+  const project = (projectData) ? projectData : {
+    title: "",
+    description: "",
+    link: "",
+    tags: [""],
+    image: "",
+  };
+
+  const [newProjectImage, setNewProjectImage] = useState(project.image);
   const [newProjectTitle, setNewProjectTitle] = useState(project.title);
   const [newProjectDescription, setNewProjectDescription] = useState(
     project.description
@@ -27,7 +36,8 @@ export default function AddEditProject({ project }) {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setNewProjectImage(reader.result);
+      const image = reader.result
+      setNewProjectImage(image);
     };
     reader.readAsDataURL(file);
   };
@@ -86,7 +96,7 @@ export default function AddEditProject({ project }) {
       >
         <Stack id="title-container">
           <Typography variant="h5">
-            {project ? "Editar projeto" : "Adicionar projeto"}
+            {projectData ? "Editar projeto" : "Adicionar projeto"}
           </Typography>
         </Stack>
 
