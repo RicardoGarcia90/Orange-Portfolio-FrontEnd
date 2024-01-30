@@ -1,10 +1,9 @@
-function App() {
+import Home from '../src/Pages/Home';
+import AddEditProject from '../src/AddEditProject/AddEditProject';
+import RoutesApp from '../src/routes/RoutesApp';
 
-  return (
-    <>
-      
-    </>
-  )
+function App() {
+  return <RoutesApp></RoutesApp>;
 }
 
-export default App
+export default App;
