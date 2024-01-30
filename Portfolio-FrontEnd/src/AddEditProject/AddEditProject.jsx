@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import CollectionsIcon from "@mui/icons-material/Collections";
 
-export default function AddEditProject({ projectData }) {
+export default function AddEditProject({ projectData, open, handleClose }) {
   
   const project = (projectData) ? projectData : {
     title: "",
@@ -71,17 +71,8 @@ export default function AddEditProject({ projectData }) {
     `);
   };
 
-  const onCancel = () => {
-    alert(`
-    Título do projeto: ${project.title}
-    Link do projeto: ${project.link}
-    Descrição do projeto: ${project.description}
-    Tags do projeto: ${project.tags.join(", ")}
-    `);
-  };
-
   return (
-    <Modal open>
+    <Modal open={open} onClose={handleClose}>
       <Container
         maxWidth={"md"}
         sx={{
@@ -244,7 +235,7 @@ export default function AddEditProject({ projectData }) {
               <Typography variant="button">Salvar</Typography>
             </SaveButton>
 
-            <CancelButton variant="contained" onClick={onCancel}>
+            <CancelButton variant="contained" onClick={handleClose}>
               <Typography variant="button">Cancelar</Typography>
             </CancelButton>
           </Stack>

@@ -1,17 +1,17 @@
-import Navbar from '../components/Navbar';
-import ProjectsList from '../components/ProjectsList';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import UserDataComponent from '../UserDataComponent/UserDataComponent';
+import Navbar from '../components/Navbar';
+import ProjectsList from '../components/ProjectsList';
+import { Typography } from '@mui/material';
 
 const user = {
   name: 'Camila',
   lastName: 'Soares',
   country: 'Brasil',
-  avatar: '../assets/userAvatar.png',
+  avatar: '../src/assets/userAvatar.png',
 };
 
-const Home = () => {
+const MeuPortfolio = () => {
   return (
     <>
       <Navbar />
@@ -22,7 +22,9 @@ const Home = () => {
           mb: '100px',
         }}
       >
-        <UserDataComponent user={user}></UserDataComponent>
+        <UserDataComponent user={user} ></UserDataComponent>
+        
+        <Typography variant="subtitle1" sx={{ mb: "16px"}}>Meus projetos</Typography>
 
         <ProjectsList />
       </Box>
@@ -30,4 +32,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default MeuPortfolio;

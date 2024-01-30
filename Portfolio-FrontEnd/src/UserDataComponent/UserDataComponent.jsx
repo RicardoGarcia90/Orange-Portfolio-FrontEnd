@@ -1,8 +1,14 @@
 /* eslint-disable react/prop-types */
 import { Button, Stack, Typography } from '@mui/material';
-import '../assets/userAvatar.png';
+import AddEditProject from '../AddEditProject/AddEditProject';
+import { useState } from 'react';
 
 function UserDataComponent({ user }) {
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const handleDialogOpen = () => setIsDialogOpen(true);
+  const handleDialogClose = () => setIsDialogOpen(false);
+
   return (
     <Stack
       sx={{
@@ -10,6 +16,7 @@ function UserDataComponent({ user }) {
         bgcolor: 'white',
         gap: '42px',
         justifyContent: 'center',
+        margin: "112px auto 56px auto",
       }}
     >
       <img
@@ -18,6 +25,9 @@ function UserDataComponent({ user }) {
         width="122"
         style={{
           borderRadius: '50%',
+          height: "122px",
+          width: "122px",
+          border: '1px solid',
         }}
       />
 
@@ -38,9 +48,11 @@ function UserDataComponent({ user }) {
         </Stack>
 
         <Typography variant="subtitle1">{user.country}</Typography>
+        <AddEditProject open={isDialogOpen} handleClose={handleDialogClose} />
 
         <Button
           variant="contained"
+          onClick={handleDialogOpen}
           sx={{
             backgroundColor: 'rgba(0, 0, 0, 0.12)',
             color: 'rgba(0, 0, 0, 0.38)',
