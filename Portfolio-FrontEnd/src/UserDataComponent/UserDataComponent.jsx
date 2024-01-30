@@ -6,9 +6,10 @@ function UserDataComponent({ user }) {
   return (
     <Stack
       sx={{
-        flexDirection: "row",
+        flexFlow: "row wrap",
         bgcolor: "white",
         gap: "42px",
+        justifyContent: "center",
       }}
     >
       <img
