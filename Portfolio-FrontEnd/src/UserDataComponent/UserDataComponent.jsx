@@ -48,7 +48,7 @@ function UserDataComponent({ user }) {
         </Stack>
 
         <Typography variant="subtitle1">{user.country}</Typography>
-        <AddEditProject open={isDialogOpen} handleClose={handleDialogClose} />
+        <AddEditProject userData={user} open={isDialogOpen} handleClose={handleDialogClose} />
 
         <Button
           variant="contained"
