@@ -1,6 +1,5 @@
 import Navbar from '../components/Navbar';
 import ProjectsList from '../components/ProjectsList';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import UserDataComponent from '../UserDataComponent/UserDataComponent';
 
@@ -24,7 +23,7 @@ const Home = () => {
       >
         <UserDataComponent user={user}></UserDataComponent>
 
-        <ProjectsList />
+        <ProjectsList isMyProjects={true} />
       </Box>
     </>
   );
