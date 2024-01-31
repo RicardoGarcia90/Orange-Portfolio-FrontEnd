@@ -1,7 +1,7 @@
-import Box from '@mui/material/Box';
-import UserDataComponent from '../UserDataComponent/UserDataComponent';
 import Navbar from '../components/Navbar';
 import ProjectsList from '../components/ProjectsList';
+import Box from '@mui/material/Box';
+import UserDataComponent from '../UserDataComponent/UserDataComponent';
 import { Typography } from '@mui/material';
 
 const user = {
@@ -22,11 +22,11 @@ const MeuPortfolio = () => {
           mb: '100px',
         }}
       >
-        <UserDataComponent user={user} ></UserDataComponent>
-        
+        <UserDataComponent user={user}></UserDataComponent>
+
         <Typography variant="subtitle1" sx={{ mb: "16px"}}>Meus projetos</Typography>
 
-        <ProjectsList />
+        <ProjectsList isMyProjects={true} />
       </Box>
     </>
   );

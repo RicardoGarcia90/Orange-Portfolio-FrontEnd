@@ -14,6 +14,7 @@ const theme = createTheme({
     },
     secondary: {
       contrastText: '#FFEECC',
+      colorSecondary60: '#FFEECC',
       light: '#FFCC99',
       colorSecondary80: '#FFAA66',
       colorSecondary90: '#FF8833',
@@ -189,6 +190,16 @@ const theme = createTheme({
       fontFeatureSettings: "'clig' off, 'liga' off",
     },
   },
+  components: {
+    MuiIconButton: {
+      styleOverrides: {
+        sizeSmall: {
+          width: '28px',
+          height: '28px',
+        }
+      }
+    }
+  }
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(

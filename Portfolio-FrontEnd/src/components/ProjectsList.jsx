@@ -2,8 +2,9 @@ import Box from "@mui/material/Box"
 import TextField from "@mui/material/TextField"
 import Grid from "@mui/material/Grid"
 import ProjectCard from "./ProjectCard"
+import { useEffect } from "react"
 
-const ProjectsList = () => {
+const ProjectsList = ({isMyProjects = false}) => {
 
   let projectsList = [
     { 
@@ -28,6 +29,14 @@ const ProjectsList = () => {
     },
   ]
 
+  useEffect(() => {
+    if(isMyProjects) {
+      console.log("Fetch my projects");
+    } else {
+      console.log("Discover projects");
+    }
+  })
+
   return (
     <>
       <Box 
@@ -43,7 +52,7 @@ const ProjectsList = () => {
           {projectsList.map((project) => {
             return (
             <Grid item key={project.id} xs={12} sm={6} md={4} xl={3}>
-              <ProjectCard project={project} />
+              <ProjectCard isMyProjects={isMyProjects} project={project} />
             </Grid>
             )
           })}
