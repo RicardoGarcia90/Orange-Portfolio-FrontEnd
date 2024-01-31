@@ -57,10 +57,10 @@ const ProjectDetail = ({open, handleClose, project}) => {
             alignItems: 'center',
             gap: '12px',
           }}>
-            <Avatar alt="User photo" src={"../src/assets/userAvatar.png"} sx={{width: '40px', height: '40px',}} />
+            <Avatar alt="User photo" src={project.author.avatar} sx={{width: '40px', height: '40px',}} />
             <Box sx={{display: 'flex', flexDirection: 'column', gap: '8px',}}>
               <Typography component="p" sx={{color: 'neutral.colorNeutral120'}}>
-                {project.name}
+                {project.author.name} {project.author.lastName}
               </Typography>
               <Typography component="p" sx={{color: 'neutral.colorNeutral110',}}>
                 {project.date}

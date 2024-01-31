@@ -12,6 +12,8 @@ import MenuItem from "@mui/material/MenuItem"
 import EditIcon from '@mui/icons-material/Edit';
 import ProjectDetail from "./ProjectDetail"
 import { useState } from "react"
+import Project from "../model/Project"
+import userMock from "../model/User"
 
 const ProjectCard = ({project, isMyProjects}) => {
 
@@ -25,6 +27,15 @@ const ProjectCard = ({project, isMyProjects}) => {
   const handleOpenEdit = (event) => setEditAnchor(event.currentTarget);
   const handleCloseEdit = () => setEditAnchor(null);
 
+  const projectMock = new Project(
+    project.title,
+    project.description,
+    project.link,
+    project.tags,
+    project.img,
+    project.date,
+    userMock
+  )
 
   return (
     <>
@@ -128,7 +139,7 @@ const ProjectCard = ({project, isMyProjects}) => {
         }
       </Card>
       
-      <ProjectDetail open={detailIsOpen} handleClose={handleCloseDetail} project={project} />
+      <ProjectDetail open={detailIsOpen} handleClose={handleCloseDetail} project={projectMock} />
     </>
   )
 }

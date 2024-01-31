@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import ProjectDetail from "../components/ProjectDetail";
+import Project from "../model/Project";
 
 export default function AddEditProject({
   projectData,
@@ -19,6 +20,11 @@ export default function AddEditProject({
   open,
   handleClose,
 }) {
+  const date = new Date();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+  const projectDate = `${month}/${year}`
+  
   const [isProjectDetailOpen, setIsProjectDetailOpen] = useState(false);
   const handleDialogOpen = () => setIsProjectDetailOpen(true);
   const handleDialogClose = () => setIsProjectDetailOpen(false);
@@ -36,6 +42,7 @@ export default function AddEditProject({
           },
         ],
         image: "",
+        date: projectDate
       };
 
   const [newProjectTitle, setNewProjectTitle] = useState(project.title);
@@ -81,12 +88,24 @@ export default function AddEditProject({
   const convertTagsToString = (tags) => tags.map((tag) => tag.desc).join(", ");
 
   const onSave = () => {
+    const savedProject = new Project(
+      newProjectTitle,
+      newProjectDescription,
+      newProjectLink,
+      newProjectTags,
+      newProjectImage,
+      projectDate,
+      userData
+    );
+    
     alert(`
-    Título do projeto: ${newProjectTitle}
-    Link do projeto: ${newProjectLink}
-    Descrição do projeto: ${newProjectDescription}
-    Tags do projeto: ${newProjectTags.join(", ")}
-    Imagem do projeto: ${newProjectImage}
+    Título do projeto: ${savedProject.title}
+    Link do projeto: ${savedProject.link}
+    Descrição do projeto: ${savedProject.description}
+    Tags do projeto: ${convertTagsToString(savedProject.tags)}
+    Data do projeto: ${savedProject.date}
+    Autor do projeto: ${savedProject.author.name} ${savedProject.author.lastName}
+    Imagem do projeto: ${savedProject.image}
     `);
   };
 
@@ -258,8 +277,9 @@ export default function AddEditProject({
               link: newProjectLink,
               tags: newProjectTags,
               image: newProjectImage,
+              date: projectDate,
+              author: userData
             }}
-            user={userData}
           />
 
           <Stack

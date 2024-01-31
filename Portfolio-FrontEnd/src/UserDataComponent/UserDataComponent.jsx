@@ -35,6 +35,7 @@ function UserDataComponent({ user }) {
         sx={{
           flexDirection: 'column',
           justifyContent: 'space-between',
+          height: "122px"
         }}
       >
         <Stack
@@ -43,11 +44,11 @@ function UserDataComponent({ user }) {
             gap: '16px',
           }}
         >
-          <Typography variant="h5">{user.name}</Typography>
-          <Typography variant="h5">{user.lastName}</Typography>
+          <Typography variant="h5">{user.name} {user.lastName}</Typography>
         </Stack>
 
         <Typography variant="subtitle1">{user.country}</Typography>
+       
         <AddEditProject userData={user} open={isDialogOpen} handleClose={handleDialogClose} />
 
         <Button
