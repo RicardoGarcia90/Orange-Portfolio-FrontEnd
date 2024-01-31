@@ -10,6 +10,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Alert from '@mui/material/Alert';
 
 import imgRegister from '../assets/images/login/registerImage.png';
 import classes from '../Pages/Register.module.css';
@@ -18,12 +19,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
-  const notify = () => toast.success('Cadastro criado com sucesso');
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -75,11 +75,10 @@ const RegisterPage = () => {
       axios
         .post('http://localhost:8000/users', formData)
         .then((result) => {
-          // alert('Cadastro criado com sucesso');
-          notify();
+          setShowAlert(true);
           setTimeout(() => {
             navigate('/');
-          }, 5800);
+          }, 2000);
         })
         .catch((err) => console.log(err));
     }
@@ -91,8 +90,16 @@ const RegisterPage = () => {
         <img src={imgRegister} className={classes.imgLogin} alt="image login" />
       </div>
       <div className={classes.formContainerPage}>
+        {showAlert && (
+          <Alert
+            variant="filled"
+            severity="success"
+            className={classes.alertSuccess}
+          >
+            Cadastro feito com sucesso
+          </Alert>
+        )}
         <form onSubmit={handleSubmit} className={classes.containerFormRegister}>
-          <ToastContainer />
           <Typography
             variant="h3"
             className={classes.tituloCadastrese}
@@ -106,7 +113,7 @@ const RegisterPage = () => {
           {valid ? (
             <></>
           ) : (
-            <span>
+            <span className={classes.spanError}>
               {errors.firstName} {errors.lastName} {errors.email}
               {errors.password}
             </span>
@@ -196,9 +203,6 @@ const RegisterPage = () => {
             Cadastrar
           </Button>
         </form>
-        <p>
-          Se já tem uma conta, por favor <Link to="/">Login Now</Link>
-        </p>
       </div>
     </div>
   );

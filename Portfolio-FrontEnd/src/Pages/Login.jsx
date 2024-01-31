@@ -20,11 +20,11 @@ import Register from './Register';
 
 const GoogleButton = styled(Button)({
   display: 'flex',
-  justifyContent: 'center',
-  padding: '11px',
-  alignItems: 'flex-start',
-  gap: 'var(--3, 24px)',
-  width: '300px',
+  padding: '11px var(--1, 8px)',
+  margin: '16px 0',
+
+  alignSelf: 'center',
+  gap: 'var(--3, 12px)',
 
   borderRadius: '2px',
   background: '#fff',
@@ -38,6 +38,7 @@ const GoogleButton = styled(Button)({
   fontStyle: 'normal',
   fontWeight: '500',
   lineHeight: 'normal',
+  textTransform: 'none',
 });
 
 const Login = () => {
@@ -112,7 +113,7 @@ const Login = () => {
           {valid ? (
             <></>
           ) : (
-            <span>
+            <span className={classes.spanError}>
               {errors.email}
               {errors.password}
             </span>
@@ -124,7 +125,7 @@ const Login = () => {
             variant="contained"
           >
             <img src={imgGoogle} alt="google logo" />
-            Entrar com google
+            Entrar com Google
           </GoogleButton>
 
           {/* Email */}
@@ -182,7 +183,7 @@ const Login = () => {
           </Button>
         </form>
         <Link to="/register" className={classes.linkRegister}>
-          Cadastre-se
+          <Typography variant="subtitle1">Cadastre-se</Typography>
         </Link>
       </div>
     </div>
