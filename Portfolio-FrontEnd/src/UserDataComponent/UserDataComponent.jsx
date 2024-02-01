@@ -5,13 +5,16 @@ import { useState } from 'react';
 
 import { useContext } from 'react';
 import UserContext from '../contexts/UserContext';
+import userMock from '../model/User'
 
-function UserDataComponent({}) {
+function UserDataComponent() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleDialogOpen = () => setIsDialogOpen(true);
   const handleDialogClose = () => setIsDialogOpen(false);
 
-  const { user } = useContext(UserContext);
+  const { userContext } = useContext(UserContext);
+
+  const user = userMock
 
   return (
     <Stack

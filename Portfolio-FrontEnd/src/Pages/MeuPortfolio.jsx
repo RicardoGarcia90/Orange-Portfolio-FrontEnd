@@ -1,9 +1,8 @@
-import Navbar from '../components/Navbar';
-import ProjectsList from '../components/ProjectsList';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import UserDataComponent from '../UserDataComponent/UserDataComponent';
-import { Typography } from '@mui/material';
-import userMock from '../model/User';
+import Navbar from '../components/Navbar';
+import ProjectsList from '../components/ProjectsList';
 
 import { useContext } from 'react';
 import UserContext from '../contexts/UserContext';
@@ -37,7 +36,7 @@ const MeuPortfolio = () => {
           mb: '100px',
         }}
       >
-        <UserDataComponent user={userMock}></UserDataComponent>
+        <UserDataComponent />
 
         <Typography variant="subtitle1" sx={{ mb: '16px' }}>
           Meus projetos
