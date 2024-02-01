@@ -60,13 +60,18 @@ const Login = () => {
   const [valid, setValid] = useState(true);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let isValid = true;
     let validationErrors = {};
 
-    if (formData.email === '' || formData.email === null) {
+    if (formData.email === null && formData.password === null) {
+      isValid = false;
+      validationErrors.email = 'Digite um email e uma senha';
+    }
+
+    if (formData.email === null || !formData.email.trim()) {
       isValid = false;
       validationErrors.email = 'Digite um email';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -74,42 +79,43 @@ const Login = () => {
       validationErrors.email = 'Digite um email valido';
     }
 
-    if (formData.password === '' || formData.password === null) {
+    if (!formData.password || !formData.password.trim()) {
       isValid = false;
       validationErrors.password = 'Digite uma senha';
     }
 
-    axios
-      .get('http://localhost:8000/users')
-      .then((result) => {
-        result.data.map((user) => {
-          if (user.email === formData.email) {
-            if (user.password === formData.password) {
-              // CONTEXT
-              setUser({
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                password: user.password,
-              });
+    if (isValid) {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/users?email=${formData.email}`
+        );
+        const user = response.data[0];
 
-              navigate('/meuportfolio');
-            } else if (user.password !== formData.password) {
-              isValid = false;
-              validationErrors.password = 'Senha incorreta';
-            }
+        if (user) {
+          if (user.password === formData.password) {
+            setUser({
+              id: user.id,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
+              password: user.password,
+            });
+            navigate('/meuportfolio');
           } else {
             isValid = false;
-            validationErrors.password =
-              'Cadastro não encontrado, verifique seus dados ou cadastre-se';
+            validationErrors.password = 'Senha incorreta';
           }
-        });
-
-        setErrors(validationErrors);
-        setValid(isValid);
-      })
-      .catch((err) => console.log(err));
+        } else {
+          isValid = false;
+          validationErrors.email =
+            'Usuário não encontrado, verifique seus dados ou cadastre-se';
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    }
+    setErrors(validationErrors);
+    setValid(isValid);
   };
 
   return (
