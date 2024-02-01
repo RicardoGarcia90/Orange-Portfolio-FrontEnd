@@ -26,7 +26,7 @@ const RegisterPage = () => {
   };
 
   const [formData, setFormData] = useState({
-    firstName: '',
+    name: '',
     lastName: '',
     email: '',
     password: '',
@@ -73,8 +73,12 @@ const RegisterPage = () => {
 
     if (Object.keys(validationErrors).length === 0) {
       axios
-        .post('http://localhost:8000/users', formData)
+        .post(
+          'https://orangeportfolioapi.azurewebsites.net/api/v1/auth/register',
+          formData
+        )
         .then((result) => {
+          console.log(result);
           setShowAlert(true);
           setTimeout(() => {
             navigate('/');
@@ -128,7 +132,7 @@ const RegisterPage = () => {
             className={classes.nameInput}
             name="firstName"
             onChange={(event) =>
-              setFormData({ ...formData, firstName: event.target.value })
+              setFormData({ ...formData, name: event.target.value })
             }
           />
 

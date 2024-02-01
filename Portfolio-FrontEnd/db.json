@@ -6,20 +6,6 @@
       "lastName": "Garcia",
       "email": "teste@teste.com",
       "password": "123456"
-    },
-    {
-      "id": "0db2",
-      "firstName": "teste1",
-      "lastName": "testeSob",
-      "email": "teste1@teste1.com",
-      "password": "1234567"
-    },
-    {
-      "id": "084b",
-      "firstName": "teste2",
-      "lastName": "teste2",
-      "email": "teste2@teste2.com",
-      "password": "222222"
     }
   ]
 }

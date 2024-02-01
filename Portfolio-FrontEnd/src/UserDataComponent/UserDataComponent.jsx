@@ -3,11 +3,15 @@ import { Button, Stack, Typography } from '@mui/material';
 import AddEditProject from '../AddEditProject/AddEditProject';
 import { useState } from 'react';
 
-function UserDataComponent({ user }) {
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
 
+function UserDataComponent({}) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleDialogOpen = () => setIsDialogOpen(true);
   const handleDialogClose = () => setIsDialogOpen(false);
+
+  const { user } = useContext(UserContext);
 
   return (
     <Stack
@@ -16,7 +20,7 @@ function UserDataComponent({ user }) {
         bgcolor: 'white',
         gap: '42px',
         justifyContent: 'center',
-        margin: "112px auto 56px auto",
+        margin: '112px auto 56px auto',
       }}
     >
       <img
@@ -25,8 +29,8 @@ function UserDataComponent({ user }) {
         width="122"
         style={{
           borderRadius: '50%',
-          height: "122px",
-          width: "122px",
+          height: '122px',
+          width: '122px',
           border: '1px solid',
         }}
       />
@@ -35,7 +39,7 @@ function UserDataComponent({ user }) {
         sx={{
           flexDirection: 'column',
           justifyContent: 'space-between',
-          height: "122px"
+          height: '122px',
         }}
       >
         <Stack
@@ -44,12 +48,18 @@ function UserDataComponent({ user }) {
             gap: '16px',
           }}
         >
-          <Typography variant="h5">{user.name} {user.lastName}</Typography>
+          <Typography variant="h5">
+            {user.name} {user.lastName}
+          </Typography>
         </Stack>
 
-        <Typography variant="subtitle1">{user.country}</Typography>
-       
-        <AddEditProject userData={user} open={isDialogOpen} handleClose={handleDialogClose} />
+        <Typography variant="subtitle1">{user.nation}</Typography>
+
+        <AddEditProject
+          userData={user}
+          open={isDialogOpen}
+          handleClose={handleDialogClose}
+        />
 
         <Button
           variant="contained"

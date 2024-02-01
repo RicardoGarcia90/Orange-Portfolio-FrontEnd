@@ -49,7 +49,7 @@ const Login = () => {
     event.preventDefault();
   };
 
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -86,24 +86,28 @@ const Login = () => {
 
     if (isValid) {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/users?email=${formData.email}`
+        const response = await axios.post(
+          `https://orangeportfolioapi.azurewebsites.net/api/v1/auth/login`,
+          {
+            email: formData.email,
+            password: formData.password,
+          }
         );
-        const user = response.data[0];
+        const responseUser = response.data;
+        console.log(responseUser);
+        console.log(responseUser.user.name);
 
-        if (user) {
-          if (user.password === formData.password) {
+        navigate('/meuportfolio');
+
+        if (responseUser) {
+          {
             setUser({
-              id: user.id,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              email: user.email,
-              password: user.password,
+              token: responseUser.token,
+              name: responseUser.user.name,
+              lastName: responseUser.user.lastName,
+              avatar: responseUser.user.avatar,
+              nation: responseUser.user.nation,
             });
-            navigate('/meuportfolio');
-          } else {
-            isValid = false;
-            validationErrors.password = 'Senha incorreta';
           }
         } else {
           isValid = false;
