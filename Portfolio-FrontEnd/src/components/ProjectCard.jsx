@@ -14,6 +14,7 @@ import ProjectDetail from "./ProjectDetail"
 import { useState } from "react"
 import Project from "../model/Project"
 import userMock from "../model/User"
+import AddEditProject from "../AddEditProject/AddEditProject"
 
 const ProjectCard = ({project, isMyProjects}) => {
 
@@ -36,6 +37,23 @@ const ProjectCard = ({project, isMyProjects}) => {
     project.date,
     userMock
   )
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const handleDialogOpen = () => setIsDialogOpen(true);
+  const handleDialogClose = () => setIsDialogOpen(false);
+
+  const handleEditDelete = (action) => {
+    switch (action) {
+      case 'Editar':
+        handleDialogOpen()
+        break;
+      case 'Excluir':
+        alert('Delete project')
+        break;
+      default:
+        break;
+    }
+  } 
 
   return (
     <>
@@ -122,7 +140,7 @@ const ProjectCard = ({project, isMyProjects}) => {
             >
               {["Editar", "Excluir"].map((item) => {
                 return (
-                <MenuItem key={item} onClick={() => {}} 
+                <MenuItem key={item} onClick={() => {handleEditDelete(item)}} 
                   sx={{
                     width: '208px',
                     '&:hover': {
@@ -139,6 +157,7 @@ const ProjectCard = ({project, isMyProjects}) => {
         }
       </Card>
       
+      <AddEditProject projectData={projectMock} userData={projectMock.author} open={isDialogOpen} handleClose={handleDialogClose} />
       <ProjectDetail open={detailIsOpen} handleClose={handleCloseDetail} project={projectMock} />
     </>
   )
