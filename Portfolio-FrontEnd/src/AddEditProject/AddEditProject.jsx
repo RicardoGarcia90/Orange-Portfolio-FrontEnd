@@ -20,6 +20,7 @@ export default function AddEditProject({
   userData,
   open,
   handleClose,
+  onSave
 }) {
   const date = new Date();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -51,6 +52,7 @@ export default function AddEditProject({
         ],
         image: "",
         date: projectDate,
+        author: userData
       };
 
   const [newProjectTitle, setNewProjectTitle] = useState(project.title);
@@ -97,7 +99,7 @@ export default function AddEditProject({
 
   const convertTagsToString = (tags) => tags.map((tag) => tag.desc).join(", ");
 
-  const onSave = () => {
+  const saveProject = () => {
     const savedProject = new Project(
       newProjectTitle,
       newProjectDescription,
@@ -108,6 +110,9 @@ export default function AddEditProject({
       userData
     );
 
+    onSave(savedProject);
+    console.log("Project saved!")
+      
     handleSuccessDialogOpen();
   };
 
@@ -277,7 +282,7 @@ export default function AddEditProject({
               gap: "16px",
             }}
           >
-            <SaveButton variant="contained" color="secondary" onClick={handleSuccessDialogOpen}>
+            <SaveButton variant="contained" color="secondary" onClick={saveProject}>
               <Typography variant="button">Salvar</Typography>
             </SaveButton>
 

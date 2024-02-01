@@ -3,7 +3,7 @@ import { Button, Stack, Typography } from '@mui/material';
 import AddEditProject from '../AddEditProject/AddEditProject';
 import { useState } from 'react';
 
-function UserDataComponent({ user }) {
+function UserDataComponent({ user, onSave }) {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleDialogOpen = () => setIsDialogOpen(true);
@@ -49,7 +49,7 @@ function UserDataComponent({ user }) {
 
         <Typography variant="subtitle1">{user.country}</Typography>
        
-        <AddEditProject userData={user} open={isDialogOpen} handleClose={handleDialogClose} />
+        <AddEditProject userData={user} open={isDialogOpen} handleClose={handleDialogClose} onSave={onSave} />
 
         <Button
           variant="contained"

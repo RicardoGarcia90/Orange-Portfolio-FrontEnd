@@ -2,7 +2,7 @@ import { Button, Dialog, Stack, Typography, styled } from "@mui/material";
 import { useState } from "react";
 import SuccessMessage from "./SuccessMessage";
 
-function DeleteConfirmation({ project, open, handleClose }) {
+function DeleteConfirmation({ project, onDelete, open, handleClose }) {
   
   const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
   const handleSuccessDialogOpen = () => setIsSuccessDialogOpen(true);
@@ -10,6 +10,12 @@ function DeleteConfirmation({ project, open, handleClose }) {
     setIsSuccessDialogOpen(false);
     handleClose();
   };
+
+  const deleteProject = () => {
+    onDelete(project)
+    console.log("Project deleted!")
+    handleSuccessDialogOpen;
+  }
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -32,7 +38,7 @@ function DeleteConfirmation({ project, open, handleClose }) {
           <ConfirmButton
             variant="contained"
             color="secondary"
-            onClick={handleSuccessDialogOpen}
+            onClick={deleteProject}
           >
             <Typography variant="button">Excluir</Typography>
           </ConfirmButton>

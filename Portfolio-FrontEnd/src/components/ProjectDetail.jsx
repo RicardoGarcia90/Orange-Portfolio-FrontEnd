@@ -105,10 +105,10 @@ const ProjectDetail = ({open, handleClose, project}) => {
             alignItems: 'center',
             gap: '8px',
           }}>
-            <Avatar alt="User photo" src={project.avatar} sx={{width: '40px', height: '40px',}} />
+            <Avatar alt="User photo" src={project.author.avatar} sx={{width: '40px', height: '40px',}} />
             
             <Typography component="p" sx={{color: 'neutral.colorNeutral110'}}>
-              {project.name} • {project.date}
+            {project.author.name} {project.author.lastName} • {project.date}
             </Typography>
             
           </Box>

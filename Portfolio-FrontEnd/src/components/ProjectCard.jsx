@@ -1,23 +1,21 @@
+import EditIcon from '@mui/icons-material/Edit'
 import Avatar from "@mui/material/Avatar"
 import Box from "@mui/material/Box"
-import CardContent from "@mui/material/CardContent"
-import Typography from "@mui/material/Typography"
 import Card from "@mui/material/Card"
 import CardActionArea from "@mui/material/CardActionArea"
+import CardContent from "@mui/material/CardContent"
 import CardMedia from "@mui/material/CardMedia"
 import Chip from "@mui/material/Chip"
-import Menu from "@mui/material/Menu"
 import IconButton from "@mui/material/IconButton"
+import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
-import EditIcon from '@mui/icons-material/Edit';
-import ProjectDetail from "./ProjectDetail"
+import Typography from "@mui/material/Typography"
 import { useState } from "react"
-import Project from "../model/Project"
-import userMock from "../model/User"
 import AddEditProject from "../AddEditProject/AddEditProject"
 import DeleteConfirmation from "../AddEditProject/DeleteConfirmation"
+import ProjectDetail from "./ProjectDetail"
 
-const ProjectCard = ({project, isMyProjects}) => {
+const ProjectCard = ({project, onDelete, isMyProjects}) => {
 
   const [detailIsOpen, setDetailIsOpen] = useState(false);
   const [editAnchor, setEditAnchor] = useState(null);
@@ -28,16 +26,6 @@ const ProjectCard = ({project, isMyProjects}) => {
   
   const handleOpenEdit = (event) => setEditAnchor(event.currentTarget);
   const handleCloseEdit = () => setEditAnchor(null);
-
-  const projectMock = new Project(
-    project.title,
-    project.description,
-    project.link,
-    project.tags,
-    project.img,
-    project.date,
-    userMock
-  )
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const handleEditDialogOpen = () => setIsEditDialogOpen(true);
@@ -66,7 +54,7 @@ const ProjectCard = ({project, isMyProjects}) => {
         <CardActionArea onClick={handleOpenDetail}>
           <CardMedia 
             component="img"
-            image={project.img}
+            image={project.image}
             alt="Project 1 image"
             sx={{
               height: '258px',
@@ -162,9 +150,9 @@ const ProjectCard = ({project, isMyProjects}) => {
         }
       </Card>
       
-      <AddEditProject projectData={projectMock} userData={projectMock.author} open={isEditDialogOpen} handleClose={handleEditDialogClose} />
-      <DeleteConfirmation open={isDeleteDialogOpen} handleClose={handleDeleteDialogClose} />
-      <ProjectDetail open={detailIsOpen} handleClose={handleCloseDetail} project={projectMock} />
+      <AddEditProject projectData={project} userData={project.author} open={isEditDialogOpen} handleClose={handleEditDialogClose} />
+      <DeleteConfirmation open={isDeleteDialogOpen} handleClose={handleDeleteDialogClose} project={project} onDelete={onDelete}/>
+      <ProjectDetail open={detailIsOpen} handleClose={handleCloseDetail} project={project} />
     </>
   )
 }
