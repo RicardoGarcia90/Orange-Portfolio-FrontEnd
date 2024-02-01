@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
+import UserContext from '../contexts/UserContext';
 
 import { TextField, Typography, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -48,6 +49,8 @@ const Login = () => {
     event.preventDefault();
   };
 
+  const { setUser } = useContext(UserContext);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -82,7 +85,15 @@ const Login = () => {
         result.data.map((user) => {
           if (user.email === formData.email) {
             if (user.password === formData.password) {
-              // alert('Login feito com sucesso');
+              // CONTEXT
+              setUser({
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                password: user.password,
+              });
+
               navigate('/meuportfolio');
             } else if (user.password !== formData.password) {
               isValid = false;

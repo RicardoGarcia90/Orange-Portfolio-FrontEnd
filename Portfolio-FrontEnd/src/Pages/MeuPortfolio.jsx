@@ -5,10 +5,31 @@ import UserDataComponent from '../UserDataComponent/UserDataComponent';
 import { Typography } from '@mui/material';
 import userMock from '../model/User';
 
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
+
 const MeuPortfolio = () => {
+  const { user } = useContext(UserContext);
+
+  const renderUserData = () => {
+    if (!user) return null; // Retorna null se user não estiver definido
+
+    return (
+      <ul>
+        {Object.entries(user).map(([key, value]) => (
+          <li key={key}>
+            <strong>{key}:</strong> {value}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <>
       <Navbar />
+
+      {renderUserData()}
 
       <Box
         sx={{
@@ -16,9 +37,11 @@ const MeuPortfolio = () => {
           mb: '100px',
         }}
       >
-        <UserDataComponent user={userMock} ></UserDataComponent>
-        
-        <Typography variant="subtitle1" sx={{ mb: "16px"}}>Meus projetos</Typography>
+        <UserDataComponent user={userMock}></UserDataComponent>
+
+        <Typography variant="subtitle1" sx={{ mb: '16px' }}>
+          Meus projetos
+        </Typography>
 
         <ProjectsList isMyProjects={true} />
       </Box>
