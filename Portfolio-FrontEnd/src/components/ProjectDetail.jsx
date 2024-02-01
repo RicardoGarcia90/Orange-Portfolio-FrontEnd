@@ -9,7 +9,7 @@ import Link from '@mui/material/Link';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const ProjectDetail = ({open = false, handleClose, project}) => {
+const ProjectDetail = ({open, handleClose, project}) => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -57,10 +57,10 @@ const ProjectDetail = ({open = false, handleClose, project}) => {
             alignItems: 'center',
             gap: '12px',
           }}>
-            <Avatar alt="User photo" src={project.avatar} sx={{width: '40px', height: '40px',}} />
+            <Avatar alt="User photo" src={project.author.avatar} sx={{width: '40px', height: '40px',}} />
             <Box sx={{display: 'flex', flexDirection: 'column', gap: '8px',}}>
               <Typography component="p" sx={{color: 'neutral.colorNeutral120'}}>
-                {project.name}
+                {project.author.name} {project.author.lastName}
               </Typography>
               <Typography component="p" sx={{color: 'neutral.colorNeutral110',}}>
                 {project.date}
@@ -89,7 +89,7 @@ const ProjectDetail = ({open = false, handleClose, project}) => {
           width: '100%',
           mt: '32px',          
         }}>
-          <img src={project.img} />
+          <img src={project.image} />
         </Box>
 
         <Box 

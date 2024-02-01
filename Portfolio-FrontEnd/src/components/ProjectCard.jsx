@@ -12,6 +12,10 @@ import MenuItem from "@mui/material/MenuItem"
 import EditIcon from '@mui/icons-material/Edit';
 import ProjectDetail from "./ProjectDetail"
 import { useState } from "react"
+import Project from "../model/Project"
+import userMock from "../model/User"
+import AddEditProject from "../AddEditProject/AddEditProject"
+import DeleteConfirmation from "../AddEditProject/DeleteConfirmation"
 
 const ProjectCard = ({project, isMyProjects}) => {
 
@@ -25,6 +29,36 @@ const ProjectCard = ({project, isMyProjects}) => {
   const handleOpenEdit = (event) => setEditAnchor(event.currentTarget);
   const handleCloseEdit = () => setEditAnchor(null);
 
+  const projectMock = new Project(
+    project.title,
+    project.description,
+    project.link,
+    project.tags,
+    project.img,
+    project.date,
+    userMock
+  )
+
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const handleEditDialogOpen = () => setIsEditDialogOpen(true);
+  const handleEditDialogClose = () => setIsEditDialogOpen(false);
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const handleDeleteDialogOpen = () => setIsDeleteDialogOpen(true);
+  const handleDeleteDialogClose = () => setIsDeleteDialogOpen(false);
+
+  const handleEditDelete = (action) => {
+    switch (action) {
+      case 'Editar':
+        handleEditDialogOpen()
+        break;
+      case 'Excluir':
+        handleDeleteDialogOpen()
+        break;
+      default:
+        break;
+    }
+  } 
 
   return (
     <>
@@ -111,7 +145,7 @@ const ProjectCard = ({project, isMyProjects}) => {
             >
               {["Editar", "Excluir"].map((item) => {
                 return (
-                <MenuItem key={item} onClick={() => {}} 
+                <MenuItem key={item} onClick={() => {handleEditDelete(item)}} 
                   sx={{
                     width: '208px',
                     '&:hover': {
@@ -128,7 +162,9 @@ const ProjectCard = ({project, isMyProjects}) => {
         }
       </Card>
       
-      <ProjectDetail open={detailIsOpen} handleClose={handleCloseDetail} project={project} />
+      <AddEditProject projectData={projectMock} userData={projectMock.author} open={isEditDialogOpen} handleClose={handleEditDialogClose} />
+      <DeleteConfirmation open={isDeleteDialogOpen} handleClose={handleDeleteDialogClose} />
+      <ProjectDetail open={detailIsOpen} handleClose={handleCloseDetail} project={projectMock} />
     </>
   )
 }

@@ -11,38 +11,72 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import CollectionsIcon from "@mui/icons-material/Collections";
+import ProjectDetail from "../components/ProjectDetail";
+import Project from "../model/Project";
+import SuccessMessage from "./SuccessMessage";
 
-export default function AddEditProject({ projectData }) {
-  
-  const project = (projectData) ? projectData : {
-    title: "",
-    description: "",
-    link: "",
-    tags: [""],
-    image: "",
+export default function AddEditProject({
+  projectData,
+  userData,
+  open,
+  handleClose,
+}) {
+  const date = new Date();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+  const projectDate = `${month}/${year}`;
+
+  const [isProjectDetailOpen, setIsProjectDetailOpen] = useState(false);
+  const handleDialogOpen = () => setIsProjectDetailOpen(true);
+  const handleDialogClose = () => setIsProjectDetailOpen(false);
+
+  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
+  const handleSuccessDialogOpen = () => setIsSuccessDialogOpen(true);
+  const handleSuccessDialogClose = () => {
+    setIsSuccessDialogOpen(false);
+    handleClose();
   };
 
-  const [newProjectImage, setNewProjectImage] = useState(project.image);
+  const project = projectData
+    ? projectData
+    : {
+        title: "",
+        description: "",
+        link: "",
+        tags: [
+          {
+            id: 0,
+            desc: "",
+          },
+        ],
+        image: "",
+        date: projectDate,
+      };
+
   const [newProjectTitle, setNewProjectTitle] = useState(project.title);
   const [newProjectDescription, setNewProjectDescription] = useState(
     project.description
   );
   const [newProjectLink, setNewProjectLink] = useState(project.link);
-  const [newProjectTags, setNewProjectTags] = useState([
-    project.tags.join(", "),
-  ]);
+  const [newProjectTags, setNewProjectTags] = useState(project.tags);
+  const [newProjectImage, setNewProjectImage] = useState(project.image);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      const image = reader.result
+      const image = reader.result;
       setNewProjectImage(image);
     };
     reader.readAsDataURL(file);
   };
 
   const handleTextChange = (event, field) => {
+    const tagsList = event.target.value.split(",");
+    const tags = tagsList.map((tag, index) => ({
+      id: index,
+      desc: tag.trim(),
+    }));
     switch (field) {
       case "Título":
         setNewProjectTitle(event.target.value);
@@ -54,34 +88,31 @@ export default function AddEditProject({ projectData }) {
         setNewProjectLink(event.target.value);
         break;
       case "Tags":
-        setNewProjectTags(event.target.value.split(","));
+        setNewProjectTags(tags);
         break;
       default:
         break;
     }
   };
 
-  const onSave = () => {
-    alert(`
-    Título do projeto: ${newProjectTitle}
-    Link do projeto: ${newProjectLink}
-    Descrição do projeto: ${newProjectDescription}
-    Tags do projeto: ${newProjectTags.join(", ")}
-    Imagem do projeto: ${newProjectImage}
-    `);
-  };
+  const convertTagsToString = (tags) => tags.map((tag) => tag.desc).join(", ");
 
-  const onCancel = () => {
-    alert(`
-    Título do projeto: ${project.title}
-    Link do projeto: ${project.link}
-    Descrição do projeto: ${project.description}
-    Tags do projeto: ${project.tags.join(", ")}
-    `);
+  const onSave = () => {
+    const savedProject = new Project(
+      newProjectTitle,
+      newProjectDescription,
+      newProjectLink,
+      newProjectTags,
+      newProjectImage,
+      projectDate,
+      userData
+    );
+
+    handleSuccessDialogOpen();
   };
 
   return (
-    <Modal open>
+    <Modal open={open} onClose={handleClose}>
       <Container
         maxWidth={"md"}
         sx={{
@@ -130,7 +161,7 @@ export default function AddEditProject({ projectData }) {
               />
               <InputText
                 label="Tags"
-                defaultText={project.tags.join(", ")}
+                defaultText={convertTagsToString(project.tags)}
                 handleTextChange={handleTextChange}
               />
               <InputText
@@ -229,10 +260,16 @@ export default function AddEditProject({ projectData }) {
             alignItems: "flex-start",
           }}
         >
-          <a href="/">
-            <Typography variant="subtitle1">Visualizar publicação</Typography>
-          </a>
-
+          <Typography
+            variant="subtitle1"
+            onClick={handleDialogOpen}
+            sx={{
+              "&:hover": { cursor: "pointer" },
+            }}
+          >
+            Visualizar publicação
+          </Typography>
+          
           <Stack
             id="buttons"
             sx={{
@@ -240,14 +277,35 @@ export default function AddEditProject({ projectData }) {
               gap: "16px",
             }}
           >
-            <SaveButton variant="contained" color="secondary" onClick={onSave}>
+            <SaveButton variant="contained" color="secondary" onClick={handleSuccessDialogOpen}>
               <Typography variant="button">Salvar</Typography>
             </SaveButton>
 
-            <CancelButton variant="contained" onClick={onCancel}>
+            <CancelButton variant="contained" onClick={handleClose}>
               <Typography variant="button">Cancelar</Typography>
             </CancelButton>
           </Stack>
+
+          <ProjectDetail
+            open={isProjectDetailOpen}
+            handleClose={handleDialogClose}
+            project={{
+              title: newProjectTitle,
+              description: newProjectDescription,
+              link: newProjectLink,
+              tags: newProjectTags,
+              image: newProjectImage,
+              date: projectDate,
+              author: userData,
+            }}
+          />
+
+          <SuccessMessage
+            messageType={projectData ? "edit" : "add"}
+            open={isSuccessDialogOpen}
+            handleClose={handleSuccessDialogClose}
+          />
+  
         </Stack>
       </Container>
     </Modal>
