@@ -13,6 +13,7 @@ import { useState } from "react";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import ProjectDetail from "../components/ProjectDetail";
 import Project from "../model/Project";
+import SuccessMessage from "./SuccessMessage";
 
 export default function AddEditProject({
   projectData,
@@ -23,11 +24,18 @@ export default function AddEditProject({
   const date = new Date();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const year = date.getFullYear();
-  const projectDate = `${month}/${year}`
-  
+  const projectDate = `${month}/${year}`;
+
   const [isProjectDetailOpen, setIsProjectDetailOpen] = useState(false);
   const handleDialogOpen = () => setIsProjectDetailOpen(true);
   const handleDialogClose = () => setIsProjectDetailOpen(false);
+
+  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
+  const handleSuccessDialogOpen = () => setIsSuccessDialogOpen(true);
+  const handleSuccessDialogClose = () => {
+    setIsSuccessDialogOpen(false);
+    handleClose();
+  };
 
   const project = projectData
     ? projectData
@@ -42,11 +50,13 @@ export default function AddEditProject({
           },
         ],
         image: "",
-        date: projectDate
+        date: projectDate,
       };
 
   const [newProjectTitle, setNewProjectTitle] = useState(project.title);
-  const [newProjectDescription, setNewProjectDescription] = useState(project.description);
+  const [newProjectDescription, setNewProjectDescription] = useState(
+    project.description
+  );
   const [newProjectLink, setNewProjectLink] = useState(project.link);
   const [newProjectTags, setNewProjectTags] = useState(project.tags);
   const [newProjectImage, setNewProjectImage] = useState(project.image);
@@ -97,16 +107,8 @@ export default function AddEditProject({
       projectDate,
       userData
     );
-    
-    alert(`
-    Título do projeto: ${savedProject.title}
-    Link do projeto: ${savedProject.link}
-    Descrição do projeto: ${savedProject.description}
-    Tags do projeto: ${convertTagsToString(savedProject.tags)}
-    Data do projeto: ${savedProject.date}
-    Autor do projeto: ${savedProject.author.name} ${savedProject.author.lastName}
-    Imagem do projeto: ${savedProject.image}
-    `);
+
+    handleSuccessDialogOpen();
   };
 
   return (
@@ -267,7 +269,6 @@ export default function AddEditProject({
           >
             Visualizar publicação
           </Typography>
-
           <ProjectDetail
             open={isProjectDetailOpen}
             handleClose={handleDialogClose}
@@ -278,10 +279,9 @@ export default function AddEditProject({
               tags: newProjectTags,
               image: newProjectImage,
               date: projectDate,
-              author: userData
+              author: userData,
             }}
           />
-
           <Stack
             id="buttons"
             sx={{
@@ -297,6 +297,13 @@ export default function AddEditProject({
               <Typography variant="button">Cancelar</Typography>
             </CancelButton>
           </Stack>
+
+          <SuccessMessage
+            messageType={projectData ? "edit" : "add"}
+            open={isSuccessDialogOpen}
+            handleClose={handleSuccessDialogClose}
+          />
+  
         </Stack>
       </Container>
     </Modal>
