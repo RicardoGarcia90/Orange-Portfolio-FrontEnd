@@ -8,8 +8,10 @@ function SuccessMessage({ messageType, open, handleClose }) {
         return 'Projeto adicionado com sucesso!';
       case 'edit':
         return 'Edição concluída com sucesso!';
-      default:
+      case 'delete':
         return 'Projeto deletado com sucesso!';
+        default:
+          return 'Invalid entry' 
     }
   });
 

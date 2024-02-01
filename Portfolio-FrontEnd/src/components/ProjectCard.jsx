@@ -15,6 +15,7 @@ import { useState } from "react"
 import Project from "../model/Project"
 import userMock from "../model/User"
 import AddEditProject from "../AddEditProject/AddEditProject"
+import DeleteConfirmation from "../AddEditProject/DeleteConfirmation"
 
 const ProjectCard = ({project, isMyProjects}) => {
 
@@ -38,17 +39,21 @@ const ProjectCard = ({project, isMyProjects}) => {
     userMock
   )
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const handleDialogOpen = () => setIsDialogOpen(true);
-  const handleDialogClose = () => setIsDialogOpen(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const handleEditDialogOpen = () => setIsEditDialogOpen(true);
+  const handleEditDialogClose = () => setIsEditDialogOpen(false);
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const handleDeleteDialogOpen = () => setIsDeleteDialogOpen(true);
+  const handleDeleteDialogClose = () => setIsDeleteDialogOpen(false);
 
   const handleEditDelete = (action) => {
     switch (action) {
       case 'Editar':
-        handleDialogOpen()
+        handleEditDialogOpen()
         break;
       case 'Excluir':
-        alert('Delete project')
+        handleDeleteDialogOpen()
         break;
       default:
         break;
@@ -157,7 +162,8 @@ const ProjectCard = ({project, isMyProjects}) => {
         }
       </Card>
       
-      <AddEditProject projectData={projectMock} userData={projectMock.author} open={isDialogOpen} handleClose={handleDialogClose} />
+      <AddEditProject projectData={projectMock} userData={projectMock.author} open={isEditDialogOpen} handleClose={handleEditDialogClose} />
+      <DeleteConfirmation open={isDeleteDialogOpen} handleClose={handleDeleteDialogClose} />
       <ProjectDetail open={detailIsOpen} handleClose={handleCloseDetail} project={projectMock} />
     </>
   )

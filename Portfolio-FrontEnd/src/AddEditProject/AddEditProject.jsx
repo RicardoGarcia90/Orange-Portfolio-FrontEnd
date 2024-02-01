@@ -269,6 +269,23 @@ export default function AddEditProject({
           >
             Visualizar publicação
           </Typography>
+          
+          <Stack
+            id="buttons"
+            sx={{
+              flexDirection: "row",
+              gap: "16px",
+            }}
+          >
+            <SaveButton variant="contained" color="secondary" onClick={handleSuccessDialogOpen}>
+              <Typography variant="button">Salvar</Typography>
+            </SaveButton>
+
+            <CancelButton variant="contained" onClick={handleClose}>
+              <Typography variant="button">Cancelar</Typography>
+            </CancelButton>
+          </Stack>
+
           <ProjectDetail
             open={isProjectDetailOpen}
             handleClose={handleDialogClose}
@@ -282,21 +299,6 @@ export default function AddEditProject({
               author: userData,
             }}
           />
-          <Stack
-            id="buttons"
-            sx={{
-              flexDirection: "row",
-              gap: "16px",
-            }}
-          >
-            <SaveButton variant="contained" color="secondary" onClick={onSave}>
-              <Typography variant="button">Salvar</Typography>
-            </SaveButton>
-
-            <CancelButton variant="contained" onClick={handleClose}>
-              <Typography variant="button">Cancelar</Typography>
-            </CancelButton>
-          </Stack>
 
           <SuccessMessage
             messageType={projectData ? "edit" : "add"}
