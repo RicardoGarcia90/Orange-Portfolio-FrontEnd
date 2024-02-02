@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
@@ -91,13 +91,19 @@ const Login = () => {
           {
             email: formData.email,
             password: formData.password,
+          },
+          {
+            headers: {
+              'Acces-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+            }
           }
         );
         const responseUser = response.data;
         console.log(responseUser);
         console.log(responseUser.user.name);
 
-        navigate('/meuportfolio');
+        
 
         if (responseUser) {
           {
@@ -109,11 +115,15 @@ const Login = () => {
               nation: responseUser.user.nation,
             });
           }
+
+          localStorage.setItem('orange-user', JSON.stringify(responseUser))
         } else {
           isValid = false;
           validationErrors.email =
             'Usuário não encontrado, verifique seus dados ou cadastre-se';
         }
+
+        navigate('/meuportfolio');
       } catch (error) {
         console.error('Error fetching user:', error);
       }
@@ -121,6 +131,21 @@ const Login = () => {
     setErrors(validationErrors);
     setValid(isValid);
   };
+
+  useEffect(() => {
+    const localUser = JSON.parse(localStorage.getItem('orange-user'));
+    console.log(localUser)
+    if(localUser) {
+      setUser({
+        token: localUser.token,
+        name: localUser.user.name,
+        lastName: localUser.user.lastName,
+        avatar: localUser.user.avatar,
+        nation: localUser.user.nation,
+      });
+      navigate('/meuportfolio')
+    }
+  })
 
   return (
     <div className={classes.container}>

@@ -12,9 +12,9 @@ function UserDataComponent() {
   const handleDialogOpen = () => setIsDialogOpen(true);
   const handleDialogClose = () => setIsDialogOpen(false);
 
-  const { userContext } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
-  const user = userMock
+  // const user = userMock
 
   return (
     <Stack
