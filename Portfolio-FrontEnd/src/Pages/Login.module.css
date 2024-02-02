@@ -31,9 +31,42 @@
   margin-left: 110px;
   align-self: flex-start;
   color: #818388;
+  text-decoration: none;
 }
 
 .spanError {
   color: red;
   margin: 8px;
+}
+
+/* ---------------------------------------------------- */
+
+@media screen and (max-width: 991px) {
+  .container {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    margin-left: 10px;
+  }
+
+  .imgContainer {
+    display: none;
+  }
+
+  .containerForm > .titleLogin {
+    font-size: 24px;
+  }
+
+  .containerForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin-top: 50px;
+  }
+
+  .linkRegister {
+    margin-left: 35px;
+  }
 }

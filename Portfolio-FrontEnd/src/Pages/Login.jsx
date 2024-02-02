@@ -160,7 +160,9 @@ const Login = () => {
       </div>
       <div className={classes.containerForm}>
         <form onSubmit={handleSubmit} className={classes.containerForm}>
-          <Typography variant="h3">Entre no Orange Portfólio</Typography>
+          <Typography variant="h3" className={classes.titleLogin}>
+            Entre no Orange Portfólio
+          </Typography>
 
           {valid ? (
             <></>
