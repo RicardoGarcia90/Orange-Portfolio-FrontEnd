@@ -132,21 +132,6 @@ const Login = () => {
     setValid(isValid);
   };
 
-  useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem('orange-user'));
-    console.log(localUser)
-    if(localUser) {
-      setUser({
-        token: localUser.token,
-        name: localUser.user.name,
-        lastName: localUser.user.lastName,
-        avatar: localUser.user.avatar,
-        nation: localUser.user.nation,
-      });
-      navigate('/meuportfolio')
-    }
-  })
-
   return (
     <div className={classes.container}>
       <div className={classes.imgContainer}>

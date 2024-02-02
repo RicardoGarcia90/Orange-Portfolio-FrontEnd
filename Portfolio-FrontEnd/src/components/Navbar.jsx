@@ -1,14 +1,15 @@
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Divider from "@mui/material/Divider";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import UserContext from "../contexts/UserContext";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
 
@@ -20,6 +21,8 @@ const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   }
+
+  const { user } = useContext(UserContext);
 
   return (
     <AppBar 
@@ -52,10 +55,10 @@ const Navbar = () => {
           fontWeight: '400',
           fontSize: '20px',
         }}>
-          <Link href="#" underline="none" color="inherit">
+          <Link to={'/meuportfolio'}>
             Meus Projetos
           </Link>
-          <Link href="#" underline="none" color="inherit">
+          <Link to={'/home'}>
             Descobrir
           </Link>
         </Box>
@@ -96,18 +99,18 @@ const Navbar = () => {
           sx={{fontSize: '16px'}}
         >
           <MenuItem onClick={handleClose}>
-            <Link href="#" underline="none" color="inherit">
+            <Link to={'/meuportfolio'}>
               Meus Projetos
             </Link>
           </MenuItem>
           <MenuItem onClick={handleClose}>
-            <Link href="#" underline="none" color="inherit">
+            <Link to={'/home'}>
               Descobrir
             </Link>
           </MenuItem>
           <Divider />
           <MenuItem onClick={handleClose}>
-            <Link href="#" underline="none" color="inherit">
+            <Link to={'/home'}>
               Configurações
             </Link>
           </MenuItem>
@@ -124,7 +127,7 @@ const Navbar = () => {
         alignItems: 'center',
         gap: '16px',
       }}>
-        <Avatar src="src/assets/profile-pic.png" />
+        <Avatar src={user.avatar} />
         <NotificationsIcon />
       </Box>
     </AppBar>

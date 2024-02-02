@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react"
 import AddEditProject from "../AddEditProject/AddEditProject"
 import UserContext from "../contexts/UserContext"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 const ProjectsList = ({isMyProjects = false}) => {
 
@@ -37,6 +38,8 @@ const ProjectsList = ({isMyProjects = false}) => {
 
   const { user } = useContext(UserContext);
 
+  const navigate = useNavigate();
+
   const [isAddOpen, setIsAddOpen] = useState(false);
   const handleAddOpen = () => setIsAddOpen(true);
   const handleAddClose = () => setIsAddOpen(false);
@@ -45,17 +48,19 @@ const ProjectsList = ({isMyProjects = false}) => {
     if(isMyProjects) {
       handleAddOpen()
     } else {
-      // Navigate to my portfolio
+      navigate('/meuportfolio')
     }
   }
 
   useEffect(() => {
     if(isMyProjects) {
-      axios.get(`https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
-        {
-          Authorization: `Bearer user.token`
-        }
-      )
+      axios.request({
+        headers: {
+          Authorization: `bearer ${user.token}`
+        },
+        method: 'GET',
+        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
+      })
       .then((res) => {
         console.log(res);
       })
@@ -66,7 +71,6 @@ const ProjectsList = ({isMyProjects = false}) => {
 
   return (
     <>
-    <button onClick={() => console.log(user)}>aaa</button>
       <Box 
         sx={{
           maxWidth: '723px',
