@@ -2,10 +2,11 @@ import { createContext, useState } from 'react';
 
 const UserContext = createContext({
   user: {
-    name: '',
-    lastName: '',
-    avatar: '',
-    nation: '',
+    token: null,
+    name: null,
+    lastName: null,
+    avatar: null,
+    nation: null,
   },
   setUser: () => {},
 });

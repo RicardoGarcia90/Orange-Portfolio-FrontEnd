@@ -1,18 +1,17 @@
-import Box from "@mui/material/Box"
-import TextField from "@mui/material/TextField"
-import Grid from "@mui/material/Grid"
-import ProjectCard from "./ProjectCard"
-import ProjectsSkeleton from "./ProjectsSkeleton"
-import { useContext, useEffect, useState } from "react"
-import AddEditProject from "../AddEditProject/AddEditProject"
-import UserContext from "../contexts/UserContext"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import ProjectCard from './ProjectCard';
+import ProjectsSkeleton from './ProjectsSkeleton';
+import { useContext, useEffect, useState } from 'react';
+import AddEditProject from '../AddEditProject/AddEditProject';
+import UserContext from '../contexts/UserContext';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const ProjectsList = ({isMyProjects = false}) => {
-
+const ProjectsList = ({ isMyProjects = false }) => {
   // let projectsList = [
-  //   { 
+  //   {
   //     id: 1,
   //     img: 'src/assets/project-1.png',
   //     avatar: 'src/assets/project-1-profile.png',
@@ -45,70 +44,74 @@ const ProjectsList = ({isMyProjects = false}) => {
   const handleAddClose = () => setIsAddOpen(false);
 
   const handleSkeletonClick = () => {
-    if(isMyProjects) {
-      handleAddOpen()
+    if (isMyProjects) {
+      handleAddOpen();
     } else {
-      navigate('/meuportfolio')
+      navigate('/meuportfolio');
     }
-  }
+  };
 
   useEffect(() => {
-    if(isMyProjects) {
-      axios.request({
-        headers: {
-          Authorization: `bearer ${user.token}`
-        },
-        method: 'GET',
-        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
-      })
-      .then((res) => {
-        console.log(res);
-      })
+    if (isMyProjects) {
+      axios
+        .request({
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+          method: 'GET',
+          url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
+        })
+        .then((res) => {
+          console.log(res);
+        });
     } else {
       // Fetch all projects
     }
-  })
+  });
 
   return (
     <>
-      <Box 
+      <Box
         sx={{
           maxWidth: '723px',
-          mb: '40px'
-        }}>
-        <TextField id="buscar-tags" label="Buscar tags" variant="outlined" fullWidth/>
+          mb: '40px',
+        }}
+      >
+        <TextField
+          id="buscar-tags"
+          label="Buscar tags"
+          variant="outlined"
+          fullWidth
+        />
       </Box>
 
       <Box>
         <Grid container spacing={2} columnSpacing={'20px'}>
-          {
-            projectsList.length > 0 
-            ?
+          {projectsList.length > 0 ? (
             projectsList.map((project) => {
               return (
-              <Grid item key={project.id} xs={12} sm={6} md={4} xl={3}>
-                <ProjectCard isMyProjects={isMyProjects} project={project} />
-              </Grid>
-              )
+                <Grid item key={project.id} xs={12} sm={6} md={4} xl={3}>
+                  <ProjectCard isMyProjects={isMyProjects} project={project} />
+                </Grid>
+              );
             })
-            :
+          ) : (
             <>
-            <Grid item xs={12} sm={6} md={3.56} xl={3}>
-              <ProjectsSkeleton handleClick={handleSkeletonClick} />
-            </Grid>
+              <Grid item xs={12} sm={6} md={3.56} xl={3}>
+                <ProjectsSkeleton handleClick={handleSkeletonClick} />
+              </Grid>
             </>
-          }
-          
+          )}
         </Grid>
       </Box>
 
       <AddEditProject
-          userData={user}
-          open={isAddOpen}
-          handleClose={handleAddClose}
-        />
+        userData={user}
+        open={isAddOpen}
+        handleClose={handleAddClose}
+      />
     </>
-  )
-}
+  );
+};
 
-export default ProjectsList
+export default ProjectsList;

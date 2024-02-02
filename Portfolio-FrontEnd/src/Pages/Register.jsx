@@ -91,7 +91,11 @@ const RegisterPage = () => {
   return (
     <div className={classes.containerRegisterPage}>
       <div className={classes.imgContainer}>
-        <img src={imgRegister} className={classes.imgLogin} alt="image login" />
+        <img
+          src={imgRegister}
+          className={classes.imgRegister}
+          alt="image login"
+        />
       </div>
       <div className={classes.formContainerPage}>
         {showAlert && (

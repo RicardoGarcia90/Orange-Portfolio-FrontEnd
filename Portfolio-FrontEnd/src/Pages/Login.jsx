@@ -96,27 +96,28 @@ const Login = () => {
             headers: {
               'Acces-Control-Allow-Origin': '*',
               'Content-Type': 'application/json',
-            }
+            },
           }
         );
         const responseUser = response.data;
-        console.log(responseUser);
-        console.log(responseUser.user.name);
-
-        
+        // console.log(responseUser.token);
+        // console.log(responseUser.user.name);
+        // console.log(responseUser.user.lastName);
 
         if (responseUser) {
-          {
-            setUser({
-              token: responseUser.token,
-              name: responseUser.user.name,
-              lastName: responseUser.user.lastName,
-              avatar: responseUser.user.avatar,
-              nation: responseUser.user.nation,
-            });
-          }
+          setUser({
+            token: responseUser.token,
+            name: responseUser.user.name,
+            lastName: responseUser.user.lastName,
+            avatar: responseUser.user.avatar,
+            nation: responseUser.user.nation,
+          });
 
-          localStorage.setItem('orange-user', JSON.stringify(responseUser))
+          console.log(`setUser: ${user}`);
+
+          localStorage.setItem('orange-user', JSON.stringify(responseUser));
+
+          console.log(`localStorage: ${localStorage}`);
         } else {
           isValid = false;
           validationErrors.email =
@@ -132,6 +133,26 @@ const Login = () => {
     setValid(isValid);
   };
 
+  useEffect(() => {
+    const localUser = JSON.parse(localStorage.getItem('orange-user'));
+    if (localUser) {
+      setUser({
+        token: localUser.token,
+        name: localUser.user.name,
+        lastName: localUser.user.lastName,
+        avatar: localUser.user.avatar,
+        nation: localUser.user.nation,
+      });
+
+      const currentPath = window.location.pathname;
+      if (currentPath === '/') {
+        navigate('/');
+      } else {
+        navigate('/meuportfolio');
+      }
+    }
+  }, [navigate, setUser]);
+
   return (
     <div className={classes.container}>
       <div className={classes.imgContainer}>
@@ -139,7 +160,9 @@ const Login = () => {
       </div>
       <div className={classes.containerForm}>
         <form onSubmit={handleSubmit} className={classes.containerForm}>
-          <Typography variant="h3">Entre no Orange Portfólio</Typography>
+          <Typography variant="h3" className={classes.titleLogin}>
+            Entre no Orange Portfólio
+          </Typography>
 
           {valid ? (
             <></>
