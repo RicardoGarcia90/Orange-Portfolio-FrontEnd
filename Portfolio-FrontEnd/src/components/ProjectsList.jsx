@@ -54,12 +54,13 @@ const ProjectsList = ({ isMyProjects = false }) => {
   useEffect(() => {
     if (isMyProjects) {
       axios
-        .get(
-          `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
-          {
-            Authorization: `Bearer user.token`,
-          }
-        )
+        .request({
+          headers: {
+            Authorization: `bearer ${user.token}`,
+          },
+          method: 'GET',
+          url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
+        })
         .then((res) => {
           console.log(res);
         });
@@ -70,7 +71,6 @@ const ProjectsList = ({ isMyProjects = false }) => {
 
   return (
     <>
-      <button onClick={() => console.log(user)}>aaa</button>
       <Box
         sx={{
           maxWidth: '723px',
