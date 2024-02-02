@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from 'react';
 import AddEditProject from '../AddEditProject/AddEditProject';
 import UserContext from '../contexts/UserContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectsList = ({ isMyProjects = false }) => {
   // let projectsList = [
@@ -36,6 +37,8 @@ const ProjectsList = ({ isMyProjects = false }) => {
 
   const { user } = useContext(UserContext);
 
+  const navigate = useNavigate();
+
   const [isAddOpen, setIsAddOpen] = useState(false);
   const handleAddOpen = () => setIsAddOpen(true);
   const handleAddClose = () => setIsAddOpen(false);
@@ -44,7 +47,7 @@ const ProjectsList = ({ isMyProjects = false }) => {
     if (isMyProjects) {
       handleAddOpen();
     } else {
-      // Navigate to my portfolio
+      navigate('/meuportfolio');
     }
   };
 
