@@ -29,7 +29,7 @@ const ProjectDetail = ({open, handleClose, project}) => {
           position: 'relative',
           maxWidth: '1042px',
           bgcolor: 'background.default',
-          mt: {xs: '65px', sm: '100px', md: '176px'},
+          mt: {xs: '0', sm: '100px', md: '176px'},
           mx: {xs: '0', sm: '10%', md: '119px'},
           p: {xs: '61px 24px', md: '61px 112px'},
           height: {xs: '100%', md: 'auto'},
@@ -79,8 +79,8 @@ const ProjectDetail = ({open, handleClose, project}) => {
               gap: '8px'
             }}
           >
-            {project.tags.map((tag) => {
-              return <Chip label={tag.desc} key={tag.id} />
+            {project.projectsTags.map((tag, index) => {
+              return <Chip label={tag.tag.name} key={index} />
             })}
           </Box>
         </Box>
@@ -120,8 +120,8 @@ const ProjectDetail = ({open, handleClose, project}) => {
               gap: '8px'
             }}
           >
-            {project.tags.map((tag) => {
-              return <Chip label={tag.desc} key={tag.id} />
+            {project.projectsTags.map((tag, index) => {
+              return <Chip label={tag.tag.name} key={index} />
             })}
           </Box>
         </Box>

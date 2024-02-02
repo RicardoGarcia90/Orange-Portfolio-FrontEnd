@@ -63,11 +63,22 @@ const ProjectsList = ({isMyProjects = false}) => {
       })
       .then((res) => {
         console.log(res);
+        setProjectsList(res.data);
       })
     } else {
-      // Fetch all projects
+      axios.request({
+        headers: {
+          Authorization: `bearer ${user.token}`
+        },
+        method: 'GET',
+        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects`,
+      })
+      .then((res) => {
+        console.log(res)
+        setProjectsList(res.data);
+      })
     }
-  })
+  }, [])
 
   return (
     <>

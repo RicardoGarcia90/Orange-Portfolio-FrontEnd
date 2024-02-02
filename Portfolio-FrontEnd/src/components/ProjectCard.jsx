@@ -11,11 +11,12 @@ import IconButton from "@mui/material/IconButton"
 import MenuItem from "@mui/material/MenuItem"
 import EditIcon from '@mui/icons-material/Edit';
 import ProjectDetail from "./ProjectDetail"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Project from "../model/Project"
 import userMock from "../model/User"
 import AddEditProject from "../AddEditProject/AddEditProject"
 import DeleteConfirmation from "../AddEditProject/DeleteConfirmation"
+import UserContext from "../contexts/UserContext"
 
 const ProjectCard = ({project, isMyProjects}) => {
 
@@ -29,15 +30,7 @@ const ProjectCard = ({project, isMyProjects}) => {
   const handleOpenEdit = (event) => setEditAnchor(event.currentTarget);
   const handleCloseEdit = () => setEditAnchor(null);
 
-  const projectMock = new Project(
-    project.title,
-    project.description,
-    project.link,
-    project.tags,
-    project.img,
-    project.date,
-    userMock
-  )
+  const { user } = useContext(UserContext);
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const handleEditDialogOpen = () => setIsEditDialogOpen(true);
@@ -66,7 +59,7 @@ const ProjectCard = ({project, isMyProjects}) => {
         <CardActionArea onClick={handleOpenDetail}>
           <CardMedia 
             component="img"
-            image={project.img}
+            image={project.image}
             alt="Project 1 image"
             sx={{
               height: '258px',
@@ -91,7 +84,7 @@ const ProjectCard = ({project, isMyProjects}) => {
                 sx={{ width: 24, height: 24}}
               />
               <Typography component='p'>
-                {project.name} • {project.date}
+                {project.title} • {project.uploadDate}
               </Typography>
             </Box>
             <Box sx={{
@@ -99,8 +92,8 @@ const ProjectCard = ({project, isMyProjects}) => {
               alignItems: 'center',
               gap: '8px'
             }}>
-              {project.tags.map((tag) => {
-                return <Chip label={tag.desc} key={tag.id} />
+              {project.projectsTags.map((tag, index) => {
+                return <Chip label={tag.tag.name} key={index} />
               })}
             </Box>
           </CardContent>
@@ -162,9 +155,9 @@ const ProjectCard = ({project, isMyProjects}) => {
         }
       </Card>
       
-      <AddEditProject projectData={projectMock} userData={projectMock.author} open={isEditDialogOpen} handleClose={handleEditDialogClose} />
+      <AddEditProject projectData={project} userData={project.author} open={isEditDialogOpen} handleClose={handleEditDialogClose} />
       <DeleteConfirmation open={isDeleteDialogOpen} handleClose={handleDeleteDialogClose} />
-      <ProjectDetail open={detailIsOpen} handleClose={handleCloseDetail} project={projectMock} />
+      <ProjectDetail open={detailIsOpen} handleClose={handleCloseDetail} project={project} />
     </>
   )
 }

@@ -43,10 +43,11 @@ export default function AddEditProject({
         title: "",
         description: "",
         link: "",
-        tags: [
+        projectsTags: [
           {
-            id: 0,
-            desc: "",
+            tag: {
+              name: "",
+            }
           },
         ],
         image: "",
@@ -58,7 +59,7 @@ export default function AddEditProject({
     project.description
   );
   const [newProjectLink, setNewProjectLink] = useState(project.link);
-  const [newProjectTags, setNewProjectTags] = useState(project.tags);
+  const [newProjectsTags, setNewProjectsTags] = useState(project.projectsTags);
   const [newProjectImage, setNewProjectImage] = useState(project.image);
 
   const handleImageUpload = (event) => {
@@ -88,27 +89,35 @@ export default function AddEditProject({
         setNewProjectLink(event.target.value);
         break;
       case "Tags":
-        setNewProjectTags(tags);
+        setNewProjectsTags(tags);
         break;
       default:
         break;
     }
   };
 
-  const convertTagsToString = (tags) => tags.map((tag) => tag.desc).join(", ");
+  const convertTagsToString = (tags) => {
+    if(tags) {
+      return tags.map((tag) => tag.tag.name).join(", ")
+    } else {
+      return ""
+    }
+  }
 
-  const onSave = () => {
+  const handleSave = () => {
     const savedProject = new Project(
       newProjectTitle,
       newProjectDescription,
       newProjectLink,
-      newProjectTags,
+      newProjectsTags,
       newProjectImage,
       projectDate,
       userData
     );
+    
+    console.log(savedProject)
 
-    handleSuccessDialogOpen();
+    // handleSuccessDialogOpen();
   };
 
   return (
@@ -161,7 +170,7 @@ export default function AddEditProject({
               />
               <InputText
                 label="Tags"
-                defaultText={convertTagsToString(project.tags)}
+                defaultText={convertTagsToString(project.projectsTags)}
                 handleTextChange={handleTextChange}
               />
               <InputText
@@ -277,7 +286,7 @@ export default function AddEditProject({
               gap: "16px",
             }}
           >
-            <SaveButton variant="contained" color="secondary" onClick={handleSuccessDialogOpen}>
+            <SaveButton variant="contained" color="secondary" onClick={handleSave}>
               <Typography variant="button">Salvar</Typography>
             </SaveButton>
 
@@ -293,7 +302,7 @@ export default function AddEditProject({
               title: newProjectTitle,
               description: newProjectDescription,
               link: newProjectLink,
-              tags: newProjectTags,
+              projectsTags: newProjectsTags,
               image: newProjectImage,
               date: projectDate,
               author: userData,
