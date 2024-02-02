@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { useContext } from 'react';
 import UserContext from '../contexts/UserContext';
-import userMock from '../model/User'
+import userMock from '../model/User';
 
 function UserDataComponent() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
