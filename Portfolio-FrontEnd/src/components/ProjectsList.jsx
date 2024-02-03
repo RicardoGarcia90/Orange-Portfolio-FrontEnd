@@ -43,6 +43,13 @@ const ProjectsList = ({ isMyProjects = false }) => {
   const handleAddOpen = () => setIsAddOpen(true);
   const handleAddClose = () => setIsAddOpen(false);
 
+  const handleSearch = (e) => {
+    let search = e.target.value;
+    if(search.length > 1) {
+      console.log(search);
+    }
+  }
+
   const handleSkeletonClick = () => {
     if (isMyProjects) {
       handleAddOpen();
@@ -92,6 +99,7 @@ const ProjectsList = ({ isMyProjects = false }) => {
           label="Buscar tags"
           variant="outlined"
           fullWidth
+          onChange={handleSearch}
         />
       </Box>
 

@@ -9,11 +9,13 @@ import {
   Modal,
   Stack,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import ProjectDetail from "../components/ProjectDetail";
 import Project from "../model/Project";
 import SuccessMessage from "./SuccessMessage";
+import axios from "axios";
+import UserContext from "../contexts/UserContext";
 
 export default function AddEditProject({
   projectData,
@@ -34,7 +36,7 @@ export default function AddEditProject({
   const handleSuccessDialogOpen = () => setIsSuccessDialogOpen(true);
   const handleSuccessDialogClose = () => {
     setIsSuccessDialogOpen(false);
-    handleClose();
+    handleClose('');
   };
 
   const project = projectData
@@ -61,9 +63,13 @@ export default function AddEditProject({
   const [newProjectLink, setNewProjectLink] = useState(project.link);
   const [newProjectsTags, setNewProjectsTags] = useState(project.projectsTags);
   const [newProjectImage, setNewProjectImage] = useState(project.image);
+  const [uploadImage, setUploadImage] = useState(project.image);
+
+  const { user } = useContext(UserContext);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    setUploadImage(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       const image = reader.result;
@@ -74,9 +80,10 @@ export default function AddEditProject({
 
   const handleTextChange = (event, field) => {
     const tagsList = event.target.value.split(",");
-    const tags = tagsList.map((tag, index) => ({
-      id: index,
-      desc: tag.trim(),
+    const tags = tagsList.map((tag) => ({
+      tag: {
+        name: tag.trim(),
+      }
     }));
     switch (field) {
       case "Título":
@@ -105,19 +112,43 @@ export default function AddEditProject({
   }
 
   const handleSave = () => {
+
+    const formData = new FormData();
+    formData.append('file', uploadImage)
+
+    const uploadTags = newProjectsTags.map(tag => ({
+      name: tag.tag.name,
+    }))
+
     const savedProject = new Project(
       newProjectTitle,
       newProjectDescription,
       newProjectLink,
-      newProjectsTags,
-      newProjectImage,
-      projectDate,
-      userData
+      uploadImage,
+      uploadTags,
     );
     
     console.log(savedProject)
 
-    // handleSuccessDialogOpen();
+    axios.post(`https://orangeportfolioapi.azurewebsites.net/api/v1/projects`, 
+      savedProject, {
+      headers: {
+        Authorization: `bearer ${user.token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then((res) => {
+      console.log(res);
+
+      if(res.status == 201) {
+        handleSuccessDialogOpen();
+      } else {
+        alert(`Algo deu errado! ${res.statusText}`)
+      }
+
+    }).catch((err) => {
+      console.log(err)
+    })
+    
   };
 
   return (
@@ -304,8 +335,9 @@ export default function AddEditProject({
               link: newProjectLink,
               projectsTags: newProjectsTags,
               image: newProjectImage,
-              date: projectDate,
-              author: userData,
+              uploadDate: projectDate,
+              author: `${userData.name} ${userData.lastName}`,
+              avatarAuthor: userData.avatar,
             }}
           />
 
