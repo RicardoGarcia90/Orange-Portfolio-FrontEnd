@@ -196,10 +196,10 @@ const theme = createTheme({
         sizeSmall: {
           width: '28px',
           height: '28px',
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
