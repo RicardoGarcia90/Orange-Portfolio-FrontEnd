@@ -1,5 +1,7 @@
 import { Dialog, Stack, Typography, Button, styled } from '@mui/material';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import { useContext } from 'react';
+import { ReloadContext } from '../contexts/ReloadContext';
 
 function SuccessMessage({ messageType, open, handleClose }) {
   const message = (() => {
@@ -15,10 +17,16 @@ function SuccessMessage({ messageType, open, handleClose }) {
     }
   });
 
+  const {setReload} = useContext(ReloadContext);
+  const closeDialog = () => {
+    setReload(true)
+    handleClose()
+  }
+
   return (
     <Dialog 
     open={open} 
-    onClose={handleClose}
+    onClose={closeDialog}
     >
       <Stack 
       sx={{
@@ -32,7 +40,7 @@ function SuccessMessage({ messageType, open, handleClose }) {
         >
         <Typography variant="h5" >{message()}</Typography>
         <CheckCircleRoundedIcon sx={{width: "40px", height: "40px", color: 'green'}}/>
-        <ConfirmButton variant="contained" color="secondary" onClick={handleClose}>
+        <ConfirmButton variant="contained" color="secondary" onClick={closeDialog}>
             <Typography variant='button'>Voltar para projetos</Typography>
         </ConfirmButton>
       </Stack>

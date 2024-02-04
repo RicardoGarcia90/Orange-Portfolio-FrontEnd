@@ -8,6 +8,7 @@ import AddEditProject from '../AddEditProject/AddEditProject';
 import UserContext from '../contexts/UserContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ReloadContext } from '../contexts/ReloadContext';
 
 const ProjectsList = ({ isMyProjects = false }) => {
   // let projectsList = [
@@ -32,6 +33,8 @@ const ProjectsList = ({ isMyProjects = false }) => {
   //     ]
   //   },
   // ]
+
+  const {reload, setReload} = useContext(ReloadContext);
 
   const [projectsList, setProjectsList] = useState([]);
 
@@ -59,32 +62,35 @@ const ProjectsList = ({ isMyProjects = false }) => {
   };
 
   useEffect(() => {
-    if(isMyProjects) {
-      axios.request({
-        headers: {
-          Authorization: `bearer ${user.token}`
-        },
-        method: 'GET',
-        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
-      })
-      .then((res) => {
-        console.log(res);
-        setProjectsList(res.data);
-      })
-    } else {
-      axios.request({
-        headers: {
-          Authorization: `bearer ${user.token}`
-        },
-        method: 'GET',
-        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects`,
-      })
-      .then((res) => {
-        console.log(res)
-        setProjectsList(res.data);
-      })
+    if(reload) {
+      if(isMyProjects) {
+        axios.request({
+          headers: {
+            Authorization: `bearer ${user.token}`
+          },
+          method: 'GET',
+          url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
+        })
+        .then((res) => {
+          console.log(res);
+          setProjectsList(res.data);
+        })
+      } else {
+        axios.request({
+          headers: {
+            Authorization: `bearer ${user.token}`
+          },
+          method: 'GET',
+          url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects`,
+        })
+        .then((res) => {
+          console.log(res)
+          setProjectsList(res.data);
+        })
+      }
     }
-  }, [])
+    setReload(false);
+  }, [reload])
 
   return (
     <>

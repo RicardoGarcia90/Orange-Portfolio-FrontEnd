@@ -41,6 +41,7 @@ const ProjectCard = ({project, isMyProjects}) => {
   const handleDeleteDialogClose = () => setIsDeleteDialogOpen(false);
 
   const handleEditDelete = (action) => {
+    handleCloseEdit()
     switch (action) {
       case 'Editar':
         handleEditDialogOpen()
@@ -84,7 +85,7 @@ const ProjectCard = ({project, isMyProjects}) => {
                 sx={{ width: 24, height: 24}}
               />
               <Typography component='p'>
-                {project.title} • {project.uploadDate}
+                {project.author} • {project.uploadDate}
               </Typography>
             </Box>
             <Box sx={{
@@ -156,7 +157,7 @@ const ProjectCard = ({project, isMyProjects}) => {
       </Card>
       
       <AddEditProject projectData={project} userData={project.author} open={isEditDialogOpen} handleClose={handleEditDialogClose} />
-      <DeleteConfirmation open={isDeleteDialogOpen} handleClose={handleDeleteDialogClose} />
+      <DeleteConfirmation projectId={project.id} open={isDeleteDialogOpen} handleClose={handleDeleteDialogClose} />
       <ProjectDetail open={detailIsOpen} handleClose={handleCloseDetail} project={project} />
     </>
   )

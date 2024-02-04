@@ -36,25 +36,26 @@ export default function AddEditProject({
   const handleSuccessDialogOpen = () => setIsSuccessDialogOpen(true);
   const handleSuccessDialogClose = () => {
     setIsSuccessDialogOpen(false);
-    handleClose('');
+    handleClose();
   };
 
   const project = projectData
     ? projectData
-    : {
-        title: "",
-        description: "",
-        link: "",
-        projectsTags: [
-          {
-            tag: {
-              name: "",
-            }
-          },
-        ],
-        image: "",
-        date: projectDate,
-      };
+    : 
+    {
+      title: "",
+      description: "",
+      link: "",
+      projectsTags: [
+        {
+          tag: {
+            name: "",
+          }
+        },
+      ],
+      image: "",
+      uploadDate: projectDate,
+    };
 
   const [newProjectTitle, setNewProjectTitle] = useState(project.title);
   const [newProjectDescription, setNewProjectDescription] = useState(
@@ -113,41 +114,59 @@ export default function AddEditProject({
 
   const handleSave = () => {
 
-    const formData = new FormData();
-    formData.append('file', uploadImage)
-
-    const uploadTags = newProjectsTags.map(tag => ({
-      name: tag.tag.name,
-    }))
+    const uploadTags = newProjectsTags.map(tag => tag.tag.name)
 
     const savedProject = new Project(
       newProjectTitle,
-      newProjectDescription,
       newProjectLink,
+      newProjectDescription,
       uploadImage,
       uploadTags,
     );
     
     console.log(savedProject)
 
-    axios.post(`https://orangeportfolioapi.azurewebsites.net/api/v1/projects`, 
-      savedProject, {
-      headers: {
-        Authorization: `bearer ${user.token}`,
-        'Content-Type': 'multipart/form-data'
-      }
-    }).then((res) => {
-      console.log(res);
-
-      if(res.status == 201) {
-        handleSuccessDialogOpen();
-      } else {
-        alert(`Algo deu errado! ${res.statusText}`)
-      }
-
-    }).catch((err) => {
-      console.log(err)
-    })
+    if(projectData) {
+      console.log(projectData.id)
+      axios.put(`https://orangeportfolioapi.azurewebsites.net/api/v1/projects/${projectData.id}`, 
+        savedProject, {
+        headers: {
+          Authorization: `bearer ${user.token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then((res) => {
+        console.log(res);
+  
+        if(res.status == 201 || res.status == 200) {
+          handleSuccessDialogOpen();
+        } else {
+          alert(`Algo deu errado! ${res.statusText}`)
+        }
+  
+      }).catch((err) => {
+        console.log(err)
+      })
+    } else {
+      console.log('nice')
+      axios.post(`https://orangeportfolioapi.azurewebsites.net/api/v1/projects`, 
+        savedProject, {
+        headers: {
+          Authorization: `bearer ${user.token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then((res) => {
+        console.log(res);
+  
+        if(res.status == 201) {
+          handleSuccessDialogOpen();
+        } else {
+          alert(`Algo deu errado! ${res.statusText}`)
+        }
+  
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
     
   };
 
@@ -250,7 +269,7 @@ export default function AddEditProject({
                     src={newProjectImage}
                     alt="Project's image"
                     onClick={() => setNewProjectImage(null)}
-                    style={{}}
+                    id='projectImage'
                   />
                 </Stack>
               ) : (

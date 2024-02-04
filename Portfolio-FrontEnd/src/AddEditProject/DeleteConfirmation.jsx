@@ -1,8 +1,10 @@
 import { Button, Dialog, Stack, Typography, styled } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import SuccessMessage from "./SuccessMessage";
+import axios from "axios";
+import UserContext from "../contexts/UserContext";
 
-function DeleteConfirmation({ project, open, handleClose }) {
+function DeleteConfirmation({ projectId, open, handleClose }) {
   
   const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
   const handleSuccessDialogOpen = () => setIsSuccessDialogOpen(true);
@@ -10,6 +12,33 @@ function DeleteConfirmation({ project, open, handleClose }) {
     setIsSuccessDialogOpen(false);
     handleClose();
   };
+
+  const { user } = useContext(UserContext);
+
+  const handleDelete = () => {
+
+    console.log(projectId)
+
+    axios.delete(`https://orangeportfolioapi.azurewebsites.net/api/v1/projects/${projectId}`, 
+      {
+      headers: {
+        Authorization: `bearer ${user.token}`,
+      }
+    }).then((res) => {
+      console.log(res);
+
+      if(res.status == 201 || res.status == 200) {
+        handleSuccessDialogOpen();
+      } else {
+        alert(`Algo deu errado! ${res.statusText}`)
+      }
+
+    }).catch((err) => {
+      console.log(err)
+    })
+
+    handleSuccessDialogOpen()
+  }
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -32,7 +61,7 @@ function DeleteConfirmation({ project, open, handleClose }) {
           <ConfirmButton
             variant="contained"
             color="secondary"
-            onClick={handleSuccessDialogOpen}
+            onClick={handleDelete}
           >
             <Typography variant="button">Excluir</Typography>
           </ConfirmButton>
