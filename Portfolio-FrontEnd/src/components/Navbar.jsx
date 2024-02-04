@@ -4,14 +4,19 @@ import Box from '@mui/material/Box';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Divider from '@mui/material/Divider';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useContext, useState } from 'react';
 import UserContext from '../contexts/UserContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { ListItemIcon } from '@mui/material';
 
 const Navbar = () => {
+
+  const navigate = useNavigate()
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleOpen = (e) => {
@@ -20,6 +25,20 @@ const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [anchorUser, setAnchorUser] = useState(null);
+  const userMenuOpen = Boolean(anchorUser);
+  const handleOpenUserMenu = (e) => {
+    setAnchorUser(e.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorUser(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear('orange-user');
+    navigate('/');
+  }
 
   const { user } = useContext(UserContext);
 
@@ -132,7 +151,49 @@ const Navbar = () => {
           gap: '16px',
         }}
       >
-        <Avatar src={user.avatar} />
+        <IconButton
+          id="user-avatar"
+          aria-label="Open user menu"
+          aria-controls={open ? 'user-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleOpenUserMenu}
+        >
+          <Avatar src={user.avatar} />
+        </IconButton>
+        <Menu
+          id="user-menu"
+          anchorEl={anchorUser}
+          anchorOrigin={{
+            horizontal: 'left',
+            vertical: 56,
+          }}
+          transformOrigin={{
+            horizontal: 'center',
+            vertical: 'top',
+          }}
+          open={userMenuOpen}
+          onClose={handleCloseUserMenu}
+          MenuListProps={{
+            'aria-labelledby': 'menu-button',
+          }}
+          sx={{ fontSize: '16px' }}
+        >
+          <MenuItem sx={{pl: '6px',}} >
+            <ListItemIcon sx={{pr: '6px',}} >
+              <Avatar src={user.avatar} /> 
+            </ListItemIcon>
+            {`${user.name} ${user.lastName}`}
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutIcon fontSize="small" />
+            </ListItemIcon>
+            Sair
+          </MenuItem>
+        </Menu>
+
         <NotificationsIcon />
       </Box>
     </AppBar>

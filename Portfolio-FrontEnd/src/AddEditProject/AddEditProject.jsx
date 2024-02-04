@@ -64,7 +64,7 @@ export default function AddEditProject({
   const [newProjectLink, setNewProjectLink] = useState(project.link);
   const [newProjectsTags, setNewProjectsTags] = useState(project.projectsTags);
   const [newProjectImage, setNewProjectImage] = useState(project.image);
-  const [uploadImage, setUploadImage] = useState(project.image);
+  const [uploadImage, setUploadImage] = useState(null);
 
   const { user } = useContext(UserContext);
 
@@ -115,21 +115,19 @@ export default function AddEditProject({
   const handleSave = () => {
 
     const uploadTags = newProjectsTags.map(tag => tag.tag.name)
-
-    const savedProject = new Project(
-      newProjectTitle,
-      newProjectLink,
-      newProjectDescription,
-      uploadImage,
-      uploadTags,
-    );
     
-    console.log(savedProject)
-
     if(projectData) {
-      console.log(projectData.id)
+      const editedProject = new Project(
+        newProjectTitle,
+        newProjectLink,
+        newProjectDescription,
+        uploadImage,
+        uploadTags,
+      );
+      console.log(editedProject)
+
       axios.put(`https://orangeportfolioapi.azurewebsites.net/api/v1/projects/${projectData.id}`, 
-        savedProject, {
+        editedProject, {
         headers: {
           Authorization: `bearer ${user.token}`,
           'Content-Type': 'multipart/form-data'
@@ -147,6 +145,15 @@ export default function AddEditProject({
         console.log(err)
       })
     } else {
+      const savedProject = new Project(
+        newProjectTitle,
+        newProjectLink,
+        newProjectDescription,
+        uploadImage,
+        uploadTags,
+      );
+      console.log(savedProject)
+
       axios.post(`https://orangeportfolioapi.azurewebsites.net/api/v1/projects`, 
         savedProject, {
         headers: {
