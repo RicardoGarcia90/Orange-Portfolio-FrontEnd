@@ -8,6 +8,7 @@ import AddEditProject from '../AddEditProject/AddEditProject';
 import UserContext from '../contexts/UserContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ReloadContext } from '../contexts/ReloadContext';
 
 const ProjectsList = ({ isMyProjects = false }) => {
   // let projectsList = [
@@ -33,6 +34,8 @@ const ProjectsList = ({ isMyProjects = false }) => {
   //   },
   // ]
 
+  const {reload, setReload} = useContext(ReloadContext);
+
   const [projectsList, setProjectsList] = useState([]);
 
   const { user } = useContext(UserContext);
@@ -51,23 +54,86 @@ const ProjectsList = ({ isMyProjects = false }) => {
     }
   };
 
-  useEffect(() => {
-    if (isMyProjects) {
-      axios
-        .request({
-          headers: {
-            Authorization: `bearer ${user.token}`,
-          },
-          method: 'GET',
-          url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
-        })
-        .then((res) => {
-          console.log(res);
-        });
-    } else {
-      // Fetch all projects
+  const handleSearch = (e) => {
+    let search = e.target.value;
+    console.log(search);
+
+    let searchedTags = search.replaceAll(' ', '').split(',').filter(i => i != '')
+    
+    if(search.length == 0) {
+      handleFetchProjects(isMyProjects)
+    } 
+    
+    if(search.length > 1) {
+      handleFetchByTags(isMyProjects, searchedTags)
     }
-  });
+  }
+
+  const handleFetchByTags = (isMyProjects, tagNames) => {
+    if(isMyProjects) {
+      axios.request({
+        headers: {
+          Authorization: `bearer ${user.token}`
+        },
+        method: 'GET',
+        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects/tags?tagnames=${tagNames}`,
+      })
+      .then((res) => {
+        console.log(res);
+        setProjectsList(res.data);
+        setReload(false);
+      })
+    } else {
+      axios.request({
+        headers: {
+          Authorization: `bearer ${user.token}`
+        },
+        method: 'GET',
+        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/tags?tagnames=${tagNames}`,
+      })
+      .then((res) => {
+        console.log(res);
+        setProjectsList(res.data);
+        setReload(false);
+      })
+    }
+  }
+
+  const handleFetchProjects = (isMyProjects) => {
+    if(isMyProjects) {
+      axios.request({
+        headers: {
+          Authorization: `bearer ${user.token}`
+        },
+        method: 'GET',
+        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
+      })
+      .then((res) => {
+        console.log(res);
+        setProjectsList(res.data);
+        setReload(false);
+      })
+    } else {
+      axios.request({
+        headers: {
+          Authorization: `bearer ${user.token}`
+        },
+        method: 'GET',
+        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects`,
+      })
+      .then((res) => {
+        console.log(res)
+        setProjectsList(res.data);
+        setReload(false);
+      })
+    }
+  }
+
+  useEffect(() => {
+    if(reload) {
+      handleFetchProjects(isMyProjects);
+    }
+  }, [reload])
 
   return (
     <>
@@ -82,6 +148,7 @@ const ProjectsList = ({ isMyProjects = false }) => {
           label="Buscar tags"
           variant="outlined"
           fullWidth
+          onChange={handleSearch}
         />
       </Box>
 

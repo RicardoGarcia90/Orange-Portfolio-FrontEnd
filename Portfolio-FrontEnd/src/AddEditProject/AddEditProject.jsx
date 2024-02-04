@@ -9,11 +9,13 @@ import {
   Modal,
   Stack,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import ProjectDetail from "../components/ProjectDetail";
 import Project from "../model/Project";
 import SuccessMessage from "./SuccessMessage";
+import axios from "axios";
+import UserContext from "../contexts/UserContext";
 
 export default function AddEditProject({
   projectData,
@@ -39,30 +41,36 @@ export default function AddEditProject({
 
   const project = projectData
     ? projectData
-    : {
-        title: "",
-        description: "",
-        link: "",
-        tags: [
-          {
-            id: 0,
-            desc: "",
-          },
-        ],
-        image: "",
-        date: projectDate,
-      };
+    : 
+    {
+      title: "",
+      description: "",
+      link: "",
+      projectsTags: [
+        {
+          tag: {
+            name: "",
+          }
+        },
+      ],
+      image: "",
+      uploadDate: projectDate,
+    };
 
   const [newProjectTitle, setNewProjectTitle] = useState(project.title);
   const [newProjectDescription, setNewProjectDescription] = useState(
     project.description
   );
   const [newProjectLink, setNewProjectLink] = useState(project.link);
-  const [newProjectTags, setNewProjectTags] = useState(project.tags);
+  const [newProjectsTags, setNewProjectsTags] = useState(project.projectsTags);
   const [newProjectImage, setNewProjectImage] = useState(project.image);
+  const [uploadImage, setUploadImage] = useState(null);
+
+  const { user } = useContext(UserContext);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    setUploadImage(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       const image = reader.result;
@@ -73,9 +81,10 @@ export default function AddEditProject({
 
   const handleTextChange = (event, field) => {
     const tagsList = event.target.value.split(",");
-    const tags = tagsList.map((tag, index) => ({
-      id: index,
-      desc: tag.trim(),
+    const tags = tagsList.map((tag) => ({
+      tag: {
+        name: tag.trim(),
+      }
     }));
     switch (field) {
       case "Título":
@@ -88,27 +97,83 @@ export default function AddEditProject({
         setNewProjectLink(event.target.value);
         break;
       case "Tags":
-        setNewProjectTags(tags);
+        setNewProjectsTags(tags);
         break;
       default:
         break;
     }
   };
 
-  const convertTagsToString = (tags) => tags.map((tag) => tag.desc).join(", ");
+  const convertTagsToString = (tags) => {
+    if(tags) {
+      return tags.map((tag) => tag.tag.name).join(", ")
+    } else {
+      return ""
+    }
+  }
 
-  const onSave = () => {
-    const savedProject = new Project(
-      newProjectTitle,
-      newProjectDescription,
-      newProjectLink,
-      newProjectTags,
-      newProjectImage,
-      projectDate,
-      userData
-    );
+  const handleSave = () => {
 
-    handleSuccessDialogOpen();
+    const uploadTags = newProjectsTags.map(tag => tag.tag.name)
+    
+    if(projectData) {
+      const editedProject = new Project(
+        newProjectTitle,
+        newProjectLink,
+        newProjectDescription,
+        uploadImage,
+        uploadTags,
+      );
+      console.log(editedProject)
+
+      axios.put(`https://orangeportfolioapi.azurewebsites.net/api/v1/projects/${projectData.id}`, 
+        editedProject, {
+        headers: {
+          Authorization: `bearer ${user.token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then((res) => {
+        console.log(res);
+  
+        if(res.status == 201 || res.status == 200) {
+          handleSuccessDialogOpen();
+        } else {
+          alert(`Algo deu errado! ${res.statusText}`)
+        }
+  
+      }).catch((err) => {
+        console.log(err)
+      })
+    } else {
+      const savedProject = new Project(
+        newProjectTitle,
+        newProjectLink,
+        newProjectDescription,
+        uploadImage,
+        uploadTags,
+      );
+      console.log(savedProject)
+
+      axios.post(`https://orangeportfolioapi.azurewebsites.net/api/v1/projects`, 
+        savedProject, {
+        headers: {
+          Authorization: `bearer ${user.token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then((res) => {
+        console.log(res);
+  
+        if(res.status == 201) {
+          handleSuccessDialogOpen();
+        } else {
+          alert(`Algo deu errado! ${res.statusText}`)
+        }
+  
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+    
   };
 
   return (
@@ -161,7 +226,7 @@ export default function AddEditProject({
               />
               <InputText
                 label="Tags"
-                defaultText={convertTagsToString(project.tags)}
+                defaultText={convertTagsToString(project.projectsTags)}
                 handleTextChange={handleTextChange}
               />
               <InputText
@@ -210,7 +275,7 @@ export default function AddEditProject({
                     src={newProjectImage}
                     alt="Project's image"
                     onClick={() => setNewProjectImage(null)}
-                    style={{}}
+                    id='projectImage'
                   />
                 </Stack>
               ) : (
@@ -277,7 +342,7 @@ export default function AddEditProject({
               gap: "16px",
             }}
           >
-            <SaveButton variant="contained" color="secondary" onClick={handleSuccessDialogOpen}>
+            <SaveButton variant="contained" color="secondary" onClick={handleSave}>
               <Typography variant="button">Salvar</Typography>
             </SaveButton>
 
@@ -293,10 +358,11 @@ export default function AddEditProject({
               title: newProjectTitle,
               description: newProjectDescription,
               link: newProjectLink,
-              tags: newProjectTags,
+              projectsTags: newProjectsTags,
               image: newProjectImage,
-              date: projectDate,
-              author: userData,
+              uploadDate: projectDate,
+              author: `${userData.name} ${userData.lastName}`,
+              avatarAuthor: userData.avatar,
             }}
           />
 

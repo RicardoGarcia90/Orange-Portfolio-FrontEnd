@@ -6,20 +6,24 @@ import Register from './Pages/Register';
 
 import UserContext from './contexts/UserContext';
 import { useState } from 'react';
+import { ReloadContext } from './contexts/ReloadContext';
 
 const App = () => {
   const [user, setUser] = useState({});
+  const [reload, setReload] = useState(true);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/meuportfolio" element={<MeuPortfolio />} />
-          <Route path="/home" element={<Home />} />
-        </Routes>
-      </Router>
+      <ReloadContext.Provider value={{reload, setReload}}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/meuportfolio" element={<MeuPortfolio />} />
+            <Route path="/home" element={<Home />} />
+          </Routes>
+        </Router>
+      </ReloadContext.Provider>
     </UserContext.Provider>
   );
 };

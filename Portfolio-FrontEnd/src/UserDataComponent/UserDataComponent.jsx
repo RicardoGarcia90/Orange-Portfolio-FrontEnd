@@ -34,7 +34,6 @@ function UserDataComponent() {
           borderRadius: '50%',
           height: '122px',
           width: '122px',
-          border: '1px solid',
         }}
       />
 
