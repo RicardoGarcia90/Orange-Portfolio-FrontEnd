@@ -147,7 +147,6 @@ export default function AddEditProject({
         console.log(err)
       })
     } else {
-      console.log('nice')
       axios.post(`https://orangeportfolioapi.azurewebsites.net/api/v1/projects`, 
         savedProject, {
         headers: {

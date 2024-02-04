@@ -46,13 +46,6 @@ const ProjectsList = ({ isMyProjects = false }) => {
   const handleAddOpen = () => setIsAddOpen(true);
   const handleAddClose = () => setIsAddOpen(false);
 
-  const handleSearch = (e) => {
-    let search = e.target.value;
-    if(search.length > 1) {
-      console.log(search);
-    }
-  }
-
   const handleSkeletonClick = () => {
     if (isMyProjects) {
       handleAddOpen();
@@ -61,35 +54,85 @@ const ProjectsList = ({ isMyProjects = false }) => {
     }
   };
 
+  const handleSearch = (e) => {
+    let search = e.target.value;
+    console.log(search);
+
+    let searchedTags = search.replaceAll(' ', '').split(',').filter(i => i != '')
+    
+    if(search.length == 0) {
+      handleFetchProjects(isMyProjects)
+    } 
+    
+    if(search.length > 1) {
+      handleFetchByTags(isMyProjects, searchedTags)
+    }
+  }
+
+  const handleFetchByTags = (isMyProjects, tagNames) => {
+    if(isMyProjects) {
+      axios.request({
+        headers: {
+          Authorization: `bearer ${user.token}`
+        },
+        method: 'GET',
+        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects/tags?tagnames=${tagNames}`,
+      })
+      .then((res) => {
+        console.log(res);
+        setProjectsList(res.data);
+        setReload(false);
+      })
+    } else {
+      axios.request({
+        headers: {
+          Authorization: `bearer ${user.token}`
+        },
+        method: 'GET',
+        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/tags?tagnames=${tagNames}`,
+      })
+      .then((res) => {
+        console.log(res);
+        setProjectsList(res.data);
+        setReload(false);
+      })
+    }
+  }
+
+  const handleFetchProjects = (isMyProjects) => {
+    if(isMyProjects) {
+      axios.request({
+        headers: {
+          Authorization: `bearer ${user.token}`
+        },
+        method: 'GET',
+        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
+      })
+      .then((res) => {
+        console.log(res);
+        setProjectsList(res.data);
+        setReload(false);
+      })
+    } else {
+      axios.request({
+        headers: {
+          Authorization: `bearer ${user.token}`
+        },
+        method: 'GET',
+        url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects`,
+      })
+      .then((res) => {
+        console.log(res)
+        setProjectsList(res.data);
+        setReload(false);
+      })
+    }
+  }
+
   useEffect(() => {
     if(reload) {
-      if(isMyProjects) {
-        axios.request({
-          headers: {
-            Authorization: `bearer ${user.token}`
-          },
-          method: 'GET',
-          url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects/myprojects`,
-        })
-        .then((res) => {
-          console.log(res);
-          setProjectsList(res.data);
-        })
-      } else {
-        axios.request({
-          headers: {
-            Authorization: `bearer ${user.token}`
-          },
-          method: 'GET',
-          url: `https://orangeportfolioapi.azurewebsites.net/api/v1/projects`,
-        })
-        .then((res) => {
-          console.log(res)
-          setProjectsList(res.data);
-        })
-      }
+      handleFetchProjects(isMyProjects);
     }
-    setReload(false);
   }, [reload])
 
   return (

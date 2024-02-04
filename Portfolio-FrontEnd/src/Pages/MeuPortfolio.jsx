@@ -6,9 +6,11 @@ import ProjectsList from '../components/ProjectsList';
 
 import { useContext, useEffect } from 'react';
 import UserContext from '../contexts/UserContext';
+import { ReloadContext } from '../contexts/ReloadContext';
 
 const MeuPortfolio = () => {
   const { user, setUser } = useContext(UserContext);
+  const { setReload } = useContext(ReloadContext);
 
   // const renderUserData = () => {
   //   if (!user) return null; // Retorna null se user não estiver definido
@@ -25,6 +27,7 @@ const MeuPortfolio = () => {
   // };
 
   useEffect(() => {
+    setReload(true)
     const localUser = JSON.parse(localStorage.getItem('orange-user'));
 
     if (localUser) {

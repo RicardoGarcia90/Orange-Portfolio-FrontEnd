@@ -2,8 +2,17 @@ import Navbar from "../components/Navbar"
 import ProjectsList from "../components/ProjectsList"
 import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
+import { useContext, useEffect } from "react"
+import { ReloadContext } from "../contexts/ReloadContext"
 
 const Home = () => {
+
+  const { setReload } = useContext(ReloadContext);
+
+  useEffect(() => {
+    setReload(true)
+  }, [])
+
   return (
     <>
       <Navbar />
