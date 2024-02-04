@@ -66,22 +66,24 @@ const Login = () => {
     let isValid = true;
     let validationErrors = {};
 
-    if (formData.email === null && formData.password === null) {
+    if (formData.email.trim() === '' && formData.password.trim() === '') {
       isValid = false;
       validationErrors.email = 'Digite um email e uma senha';
-    }
-
-    if (formData.email === null || !formData.email.trim()) {
+    } else if (
+      formData.email.trim() !== '' &&
+      formData.password.trim() === ''
+    ) {
       isValid = false;
-      validationErrors.email = 'Digite um email';
+      validationErrors.password = 'Digite uma senha';
+    } else if (
+      formData.email.trim() === '' &&
+      formData.password.trim() !== ''
+    ) {
+      isValid = false;
+      validationErrors.password = 'Digite um email';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       isValid = false;
       validationErrors.email = 'Digite um email valido';
-    }
-
-    if (!formData.password || !formData.password.trim()) {
-      isValid = false;
-      validationErrors.password = 'Digite uma senha';
     }
 
     if (isValid) {
