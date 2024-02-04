@@ -165,7 +165,7 @@ const Login = () => {
           </Typography>
 
           {valid ? (
-            <></>
+            ''
           ) : (
             <span className={classes.spanError}>
               {errors.email}

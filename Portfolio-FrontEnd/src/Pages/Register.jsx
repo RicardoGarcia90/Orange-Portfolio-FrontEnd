@@ -42,9 +42,9 @@ const RegisterPage = () => {
     let isValid = true;
     let validationErrors = {};
 
-    if (formData.firstName === '' || formData.firstName === null) {
+    if (formData.name === '' || formData.name === null) {
       isValid = false;
-      validationErrors.firstName = 'Digite seu nome';
+      validationErrors.name = 'Digite seu nome';
     }
 
     if (formData.lastName === '' || formData.lastName === null) {
@@ -54,7 +54,7 @@ const RegisterPage = () => {
 
     if (formData.email === '' || formData.email === null) {
       isValid = false;
-      validationErrors.email = 'Digite seu sobrenome';
+      validationErrors.email = 'Digite um email';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       isValid = false;
       validationErrors.email = 'Digite um email valido';
@@ -117,12 +117,11 @@ const RegisterPage = () => {
           >
             Cadastre-se
           </Typography>
-
           {valid ? (
-            <></>
+            ''
           ) : (
             <span className={classes.spanError}>
-              {errors.firstName} {errors.lastName} {errors.email}
+              {errors.name} {errors.lastName} {errors.email}
               {errors.password}
             </span>
           )}
@@ -134,7 +133,7 @@ const RegisterPage = () => {
             sx={{ m: 1, width: '100%' }}
             variant="outlined"
             className={classes.nameInput}
-            name="firstName"
+            name="name"
             onChange={(event) =>
               setFormData({ ...formData, name: event.target.value })
             }
