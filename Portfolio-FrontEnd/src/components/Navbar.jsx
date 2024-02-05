@@ -65,7 +65,7 @@ const Navbar = () => {
       >
         <Box sx={{ height: '41px' }}>
           <img
-            src="src/assets/orange-portfolio-logo.png"
+            src="../assets/orange-portfolio-logo.png"
             alt="Logo do Orange Portfólio"
           />
         </Box>
@@ -137,7 +137,7 @@ const Navbar = () => {
 
         <Box sx={{ height: '41px' }}>
           <img
-            src="src/assets/orange-portfolio-logo.png"
+            src="../assets/orange-portfolio-logo.png"
             alt="Logo do Orange Portfólio"
           />
         </Box>
