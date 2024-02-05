@@ -17,7 +17,8 @@ import logoOrange from '../assets/orange-portfolio-logo.png';
 
 const Navbar = () => {
 
-  const navigate = useNavigate()
+const Navbar = () => {
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -40,7 +41,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.clear('orange-user');
     navigate('/');
-  }
+  };
 
   const { user } = useContext(UserContext);
 
@@ -181,9 +182,9 @@ const Navbar = () => {
           }}
           sx={{ fontSize: '16px' }}
         >
-          <MenuItem sx={{pl: '6px',}} >
-            <ListItemIcon sx={{pr: '6px',}} >
-              <Avatar src={user.avatar} /> 
+          <MenuItem sx={{ pl: '6px' }}>
+            <ListItemIcon sx={{ pr: '6px' }}>
+              <Avatar src={user.avatar} />
             </ListItemIcon>
             {`${user.name} ${user.lastName}`}
           </MenuItem>

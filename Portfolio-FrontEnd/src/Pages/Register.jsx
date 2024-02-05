@@ -42,31 +42,79 @@ const RegisterPage = () => {
     let isValid = true;
     let validationErrors = {};
 
-    if (formData.firstName === '' || formData.firstName === null) {
+    if (
+      formData.name.trim() === '' &&
+      formData.lastName.trim() === '' &&
+      formData.email.trim() === '' &&
+      formData.password.trim() === ''
+    ) {
       isValid = false;
-      validationErrors.firstName = 'Digite seu nome';
-    }
-
-    if (formData.lastName === '' || formData.lastName === null) {
+      validationErrors.email =
+        'Por favor preencha os campos para criar um cadastro';
+    } else if (
+      formData.name.trim() === '' &&
+      formData.lastName.trim() !== '' &&
+      formData.email.trim() !== '' &&
+      formData.password.trim() !== ''
+    ) {
       isValid = false;
-      validationErrors.lastName = 'Digite seu sobrenome';
-    }
-
-    if (formData.email === '' || formData.email === null) {
+      validationErrors.email = 'Por favor digite um nome';
+    } else if (
+      formData.name.trim() !== '' &&
+      formData.lastName.trim() === '' &&
+      formData.email.trim() !== '' &&
+      formData.password.trim() !== ''
+    ) {
       isValid = false;
-      validationErrors.email = 'Digite seu sobrenome';
+      validationErrors.email = 'Por favor digite um sobrenome';
+    } else if (
+      formData.name.trim() !== '' &&
+      formData.lastName.trim() !== '' &&
+      formData.email.trim() === '' &&
+      formData.password.trim() !== ''
+    ) {
+      isValid = false;
+      validationErrors.email = 'Por favor digite um email';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       isValid = false;
       validationErrors.email = 'Digite um email valido';
-    }
-
-    if (formData.password === '' || formData.password === null) {
+    } else if (
+      formData.name.trim() !== '' &&
+      formData.lastName.trim() !== '' &&
+      formData.email.trim() !== '' &&
+      formData.password.trim() === ''
+    ) {
       isValid = false;
-      validationErrors.password = 'Digite uma senha';
+      validationErrors.email = 'Por favor digite uma senha';
     } else if (formData.password.length < 6) {
       isValid = false;
       validationErrors.password = 'A senha deve ter no mínimo 6 caracteres';
     }
+    // if (formData.name === '' || formData.name === null) {
+    //   isValid = false;
+    //   validationErrors.name = 'Digite seu nome';
+    // }
+
+    // if (formData.lastName === '' || formData.lastName === null) {
+    //   isValid = false;
+    //   validationErrors.lastName = 'Digite seu sobrenome';
+    // }
+
+    // if (formData.email === '' || formData.email === null) {
+    //   isValid = false;
+    //   validationErrors.email = 'Digite um email';
+    // } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    //   isValid = false;
+    //   validationErrors.email = 'Digite um email valido';
+    // }
+
+    // if (formData.password === '' || formData.password === null) {
+    //   isValid = false;
+    //   validationErrors.password = 'Digite uma senha';
+    // } else if (formData.password.length < 6) {
+    //   isValid = false;
+    //   validationErrors.password = 'A senha deve ter no mínimo 6 caracteres';
+    // }
 
     setErrors(validationErrors);
     setValid(isValid);
@@ -117,12 +165,11 @@ const RegisterPage = () => {
           >
             Cadastre-se
           </Typography>
-
           {valid ? (
-            <></>
+            ''
           ) : (
             <span className={classes.spanError}>
-              {errors.firstName} {errors.lastName} {errors.email}
+              {errors.name} {errors.lastName} {errors.email}
               {errors.password}
             </span>
           )}
@@ -134,7 +181,7 @@ const RegisterPage = () => {
             sx={{ m: 1, width: '100%' }}
             variant="outlined"
             className={classes.nameInput}
-            name="firstName"
+            name="name"
             onChange={(event) =>
               setFormData({ ...formData, name: event.target.value })
             }
