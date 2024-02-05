@@ -13,6 +13,8 @@ import UserContext from '../contexts/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { ListItemIcon } from '@mui/material';
 
+import logoOrange from '../assets/orange-portfolio-logo.png';
+
 const Navbar = () => {
 
   const navigate = useNavigate()
@@ -65,7 +67,7 @@ const Navbar = () => {
       >
         <Box sx={{ height: '41px' }}>
           <img
-            src="../assets/orange-portfolio-logo.png"
+            src={logoOrange}
             alt="Logo do Orange Portfólio"
           />
         </Box>
@@ -137,7 +139,7 @@ const Navbar = () => {
 
         <Box sx={{ height: '41px' }}>
           <img
-            src="../assets/orange-portfolio-logo.png"
+            src={logoOrange}
             alt="Logo do Orange Portfólio"
           />
         </Box>
