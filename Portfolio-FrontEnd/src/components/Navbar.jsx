@@ -16,6 +16,8 @@ import { ListItemIcon } from '@mui/material';
 import logoOrange from '../assets/orange-portfolio-logo.png';
 
 const Navbar = () => {
+
+const Navbar = () => {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -65,7 +67,10 @@ const Navbar = () => {
         }}
       >
         <Box sx={{ height: '41px' }}>
-          <img src={logoOrange} alt="Logo do Orange Portfólio" />
+          <img
+            src={logoOrange}
+            alt="Logo do Orange Portfólio"
+          />
         </Box>
 
         <Box
@@ -135,7 +140,7 @@ const Navbar = () => {
 
         <Box sx={{ height: '41px' }}>
           <img
-            src="src/assets/orange-portfolio-logo.png"
+            src={logoOrange}
             alt="Logo do Orange Portfólio"
           />
         </Box>
